@@ -1,0 +1,2416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DHL Global Expansion Navigator — India to Global</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<style>
+/* ═══════════════════════ CORE VARIABLES ═══════════════════════ */
+:root {
+  --red: #D40511;
+  --red-dark: #A8040D;
+  --red-glow: rgba(212,5,17,0.12);
+  --yellow: #FFCC00;
+  --yellow-dark: #E6B800;
+  --yellow-soft: rgba(255,204,0,0.15);
+  --ink: #0A0A0B;
+  --ink-2: #1C1C1E;
+  --ink-3: #3A3A3C;
+  --ink-4: #6C6C70;
+  --ink-5: #A8A8AD;
+  --ink-6: #D1D1D6;
+  --ink-7: #EBEBF0;
+  --ink-8: #F5F5F7;
+  --surface: #FFFFFF;
+  --surface-2: #F5F5F7;
+  --surface-3: #EBEBF0;
+  --border: rgba(0,0,0,0.08);
+  --border-strong: rgba(0,0,0,0.15);
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.06);
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+  --shadow-md: 0 8px 24px rgba(0,0,0,0.09);
+  --shadow-lg: 0 20px 60px rgba(0,0,0,0.12);
+  --shadow-xl: 0 40px 80px rgba(0,0,0,0.16);
+  --f-display: 'Syne', sans-serif;
+  --f-body: 'DM Sans', sans-serif;
+  --f-mono: 'JetBrains Mono', monospace;
+  --max: 1280px;
+  --nav-h: 64px;
+  --r-sm: 8px; --r-md: 12px; --r-lg: 18px; --r-xl: 24px; --r-full: 999px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+body { font-family: var(--f-body); background: var(--surface); color: var(--ink); -webkit-font-smoothing: antialiased; overflow-x: hidden; line-height: 1.6; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+ul { list-style: none; }
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 clamp(1.5rem, 4vw, 3rem); }
+.sec { padding: clamp(4rem, 6vw, 7rem) 0; }
+.sec-alt { background: var(--surface-2); }
+
+/* REVEAL ANIMATIONS */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.in { opacity: 1; transform: none; }
+.reveal[data-d="1"] { transition-delay: 0.1s; }
+.reveal[data-d="2"] { transition-delay: 0.2s; }
+.reveal[data-d="3"] { transition-delay: 0.3s; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes pulseRing { 0%,100%{transform:scale(1);opacity:0.4} 50%{transform:scale(1.08);opacity:0.1} }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* TOOLTIP */
+.tooltip { border-bottom: 1px dotted var(--ink-4); cursor: help; position: relative; display: inline-block; transition: color 0.2s; }
+.tooltip:hover { color: var(--red); border-bottom-color: var(--red); }
+.global-tooltip { position: fixed; background: var(--ink); color: #fff; padding: 0.5rem 0.75rem; border-radius: var(--r-sm); font-size: 0.75rem; font-weight: 500; font-family: var(--f-body); max-width: 250px; text-align: center; line-height: 1.4; z-index: 99999; pointer-events: none; opacity: 0; visibility: hidden; box-shadow: var(--shadow-md); transition: opacity 0.15s ease; }
+.global-tooltip.show { opacity: 1; visibility: visible; }
+.global-tooltip::after { content: ''; position: absolute; top: 100%; left: 50%; margin-left: -5px; border-width: 5px; border-style: solid; border-color: var(--ink) transparent transparent transparent; }
+.global-tooltip.arrow-top::after { top: auto; bottom: 100%; border-color: transparent transparent var(--ink) transparent; }
+
+/* BUTTONS */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; font-family: var(--f-body); font-weight: 600; border-radius: var(--r-sm); transition: all 0.22s; }
+.btn-red { background: var(--red); color: #fff; }
+.btn-red:hover { background: var(--red-dark); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.btn-yellow { background: var(--yellow); color: var(--ink); }
+.btn-yellow:hover { background: var(--yellow-dark); transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+.btn-ghost { background: transparent; color: var(--ink); border: 1.5px solid var(--border-strong); }
+.btn-ghost:hover { border-color: var(--ink); background: var(--surface-2); }
+.btn-ghost-dark { background: transparent; color: #fff; border: 1.5px solid rgba(255,255,255,0.3); }
+.btn-ghost-dark:hover { border-color: #fff; background: rgba(255,255,255,0.1); }
+.btn-sm { padding: 0.55rem 1.1rem; font-size: 0.875rem; }
+.btn-md { padding: 0.75rem 1.5rem; font-size: 0.95rem; }
+.btn-lg { padding: 0.9rem 1.9rem; font-size: 1rem; }
+
+.eyebrow { display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--f-mono); font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--red); font-weight: 600; margin-bottom: 0.85rem; }
+.eyebrow::before { content: ''; display: block; width: 20px; height: 2px; background: var(--red); border-radius: 2px; }
+.sec-title { font-family: var(--f-display); font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 1rem; }
+.sec-desc { font-size: 1rem; color: var(--ink-4); max-width: 600px; line-height: 1.7; }
+.sec-head { margin-bottom: 3rem; }
+
+/* NAV */
+nav#nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; height: var(--nav-h); background: rgba(255,255,255,0.9); backdrop-filter: blur(24px) saturate(180%); border-bottom: 1px solid var(--border); transition: box-shadow 0.3s; }
+nav#nav.scrolled { box-shadow: var(--shadow-sm); }
+.nav-in { max-width: var(--max); margin: 0 auto; padding: 0 clamp(1.5rem, 4vw, 3rem); height: 100%; display: flex; align-items: center; gap: 2rem; }
+.nav-brand { display: flex; align-items: center; gap: 0.75rem; }
+.dhl-mark { background: var(--yellow); color: var(--ink); font-family: var(--f-display); font-weight: 800; padding: 0.3rem 0.65rem; border-radius: var(--r-sm); line-height: 1; }
+.brand-txt { font-weight: 600; font-size: 0.85rem; }
+.brand-sub-txt { font-size: 0.65rem; color: var(--ink-4); }
+.nav-links { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; }
+.nav-a { font-size: 0.8rem; font-weight: 600; color: var(--ink-3); padding: 0.4rem 0.8rem; border-radius: var(--r-sm); transition: 0.2s; }
+.nav-a:hover { color: var(--ink); background: var(--surface-2); }
+@media (max-width: 900px) { .nav-links { display: none; } }
+
+/* HERO */
+.hero { min-height: 90svh; padding-top: calc(var(--nav-h) + 2rem); background: var(--ink-2); display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; }
+.hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 60px 60px; }
+.hero-orb-1 { position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(212,5,17,0.3) 0%, transparent 70%); top: -200px; right: -200px; filter: blur(80px); }
+.hero-orb-2 { position: absolute; width: 500px; height: 500px; background: radial-gradient(circle, rgba(255,204,0,0.15) 0%, transparent 70%); bottom: -100px; left: 10%; filter: blur(80px); }
+.hero-content { position: relative; z-index: 2; max-width: var(--max); margin: 0 auto; width: 100%; padding: 0 clamp(1.5rem, 4vw, 3rem); display: grid; grid-template-columns: 1.2fr 1fr; gap: 4rem; align-items: center; }
+@media (max-width: 900px) { .hero-content { grid-template-columns: 1fr; gap: 3rem; } }
+.hero-tag { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(255,204,0,0.12); border: 1px solid rgba(255,204,0,0.3); border-radius: var(--r-full); padding: 0.3rem 0.9rem; font-size: 0.75rem; font-weight: 600; color: var(--yellow); letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 1.5rem; }
+.hero-tag-dot { width: 6px; height: 6px; background: var(--yellow); border-radius: 50%; animation: pulseRing 2s infinite; }
+.hero-h1 { font-family: var(--f-display); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; line-height: 1.05; letter-spacing: -0.03em; color: #fff; margin-bottom: 1.5rem; }
+.hero-h1 .accent { color: var(--yellow); display: block; }
+.hero-desc { font-size: 1.05rem; color: rgba(255,255,255,0.65); line-height: 1.7; margin-bottom: 2rem; max-width: 480px; }
+.hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+.hero-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.stat-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--r-lg); padding: 1.5rem; transition: border-color 0.3s; }
+.stat-card:hover { border-color: rgba(255,204,0,0.3); }
+.stat-num { font-family: var(--f-display); font-size: 2rem; font-weight: 800; color: #fff; margin-bottom: 0.2rem; }
+.stat-num .stat-accent { color: var(--yellow); }
+.stat-label { font-size: 0.8rem; color: rgba(255,255,255,0.5); font-weight: 500; line-height: 1.4; }
+.hero-social-proof { grid-column: 1 / -1; display: flex; align-items: center; justify-content: center; gap: 2.5rem; padding: 1.5rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--r-lg); margin-top: 1rem; flex-wrap: wrap; }
+.sp-item { text-align: center; }
+.sp-num { font-family: var(--f-display); font-size: 1.4rem; font-weight: 800; color: var(--yellow); }
+.sp-label { font-size: 0.72rem; color: rgba(255,255,255,0.45); font-weight: 500; margin-top: 0.1rem; }
+.sp-divider { width: 1px; height: 40px; background: rgba(255,255,255,0.1); }
+@media (max-width: 600px) { .sp-divider { display: none; } }
+
+/* URGENCY BAR */
+.urgency-bar { background: linear-gradient(90deg, var(--red-dark), var(--red)); padding: 0.6rem 1.5rem; text-align: center; font-size: 0.8rem; color: #fff; font-weight: 600; letter-spacing: 0.02em; display: flex; align-items: center; justify-content: center; gap: 0.75rem; }
+.urgency-badge { background: rgba(255,255,255,0.2); border-radius: var(--r-full); padding: 0.15rem 0.6rem; font-size: 0.7rem; }
+
+/* JOURNEY */
+.journey-section { padding: clamp(4rem, 6vw, 7rem) 0; }
+.region-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+.region-btn { display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.2rem; border-radius: var(--r-full); border: 1.5px solid var(--border-strong); font-weight: 600; font-size: 0.85rem; color: var(--ink-3); cursor: pointer; transition: 0.2s; background: var(--surface); }
+.region-btn:hover { border-color: var(--red); color: var(--ink); background: var(--surface-2); }
+.region-btn.active { background: var(--red); border-color: var(--red); color: #fff; box-shadow: var(--shadow-sm); }
+.stage-tabs { display: grid; grid-template-columns: repeat(10, 1fr); gap: 0.4rem; margin-bottom: 1rem; }
+@media (max-width: 1100px) { .stage-tabs { grid-template-columns: repeat(5, 1fr); } }
+@media (max-width: 600px) { .stage-tabs { grid-template-columns: repeat(2, 1fr); } }
+.stage-tab { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; padding: 0.75rem 0.5rem; border-radius: var(--r-md); border: 1.5px solid var(--border); background: var(--surface); cursor: pointer; transition: 0.2s; }
+.stage-tab:hover { border-color: var(--ink-5); background: var(--surface-2); transform: translateY(-2px); }
+.stage-tab.active { background: var(--ink-2); border-color: var(--ink-2); transform: translateY(-2px); }
+.stage-num { font-family: var(--f-mono); font-size: 0.6rem; font-weight: 500; color: var(--ink-5); letter-spacing: 0.05em; }
+.stage-tab.active .stage-num { color: rgba(255,255,255,0.5); }
+.stage-ico { font-size: 1.2rem; }
+.stage-lbl { font-size: 0.65rem; font-weight: 600; color: var(--ink-4); text-align: center; line-height: 1.2; }
+.stage-tab.active .stage-lbl { color: rgba(255,255,255,0.9); }
+.stage-connector { height: 3px; background: var(--surface-3); border-radius: 3px; margin-bottom: 2rem; overflow: hidden; }
+.stage-connector-fill { height: 100%; background: linear-gradient(90deg, var(--yellow), var(--red)); transition: width 0.4s ease; }
+.journey-panel { border: 1.5px solid var(--border); border-radius: var(--r-xl); overflow: hidden; box-shadow: var(--shadow-md); animation: fadeUp 0.3s ease; }
+.jp-header { background: var(--ink-2); padding: 1.5rem 2rem; display: flex; justify-content: space-between; gap: 2rem; }
+@media (max-width: 700px) { .jp-header { flex-direction: column; } }
+.jp-stage-badge { display: inline-flex; align-items: center; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); border-radius: var(--r-full); padding: 0.2rem 0.7rem; font-family: var(--f-mono); font-size: 0.65rem; color: rgba(255,255,255,0.6); letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+.jp-title { font-family: var(--f-display); font-size: 1.5rem; font-weight: 700; color: #fff; line-height: 1.15; margin-bottom: 0.5rem; }
+.jp-desc { font-size: 0.9rem; color: rgba(255,255,255,0.6); line-height: 1.6; max-width: 500px; }
+.jp-region-context { background: rgba(255,204,0,0.1); border: 1px solid rgba(255,204,0,0.2); border-radius: var(--r-md); padding: 1rem 1.25rem; min-width: 220px; }
+.jp-rc-label { font-family: var(--f-mono); font-size: 0.6rem; color: var(--yellow); text-transform: uppercase; margin-bottom: 0.5rem; }
+.jp-rc-item { display: flex; gap: 0.5rem; font-size: 0.8rem; color: rgba(255,255,255,0.8); margin-bottom: 0.4rem; line-height: 1.4; }
+.jp-rc-dot { width: 5px; height: 5px; background: var(--yellow); border-radius: 50%; flex-shrink: 0; margin-top: 0.4rem; }
+.jp-outcome-banner { background: linear-gradient(135deg, rgba(255,204,0,0.05) 0%, rgba(212,5,17,0.05) 100%); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 1.25rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+.jp-outcome-label { font-family: var(--f-mono); font-size: 0.6rem; color: var(--red); text-transform: uppercase; margin-bottom: 0.2rem; }
+.jp-outcome-text { font-family: var(--f-display); font-weight: 700; font-size: 1rem; color: var(--ink); }
+.jp-nav-btn { width: 32px; height: 32px; border-radius: var(--r-sm); border: 1px solid var(--border-strong); background: var(--surface); display: flex; align-items: center; justify-content: center; font-size: 0.9rem; cursor: pointer; transition: 0.2s; }
+.jp-nav-btn:hover:not(:disabled) { border-color: var(--red); color: var(--red); background: var(--red-glow); }
+.jp-nav-btn:disabled { opacity: 0.3; cursor: default; }
+.jp-body { display: grid; grid-template-columns: 1fr 1fr 1fr; }
+@media (max-width: 900px) { .jp-body { grid-template-columns: 1fr; } }
+.jp-col { padding: 1.5rem 2rem; border-right: 1px solid var(--border); }
+.jp-col:last-child { border-right: none; }
+@media (max-width: 900px) { .jp-col { border-right: none; border-bottom: 1px solid var(--border); } }
+.jp-col-label { font-family: var(--f-mono); font-size: 0.6rem; color: var(--ink-5); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; }
+.jp-item { display: flex; gap: 0.5rem; margin-bottom: 0.5rem; font-size: 0.85rem; color: var(--ink-3); line-height: 1.4; }
+.jp-item-ico { color: var(--red); font-weight: bold; flex-shrink:0; }
+
+/* BADGE TAGS */
+.partner-badges { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.partner-badge { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.35rem 0.75rem; border-radius: var(--r-full); font-size: 0.7rem; font-weight: 600; border: 1.5px solid var(--border-strong); color: var(--ink-3); background: var(--surface); transition: all 0.2s; }
+.tag-consultant { background: rgba(99,102,241,0.05); color: #4F46E5; border-color: rgba(99,102,241,0.2); }
+.tag-finance { background: rgba(16,185,129,0.05); color: #059669; border-color: rgba(16,185,129,0.2); }
+.tag-tech { background: rgba(14,165,233,0.05); color: #0284C7; border-color: rgba(14,165,233,0.2); }
+.tag-marketing { background: rgba(236,72,153,0.05); color: #DB2777; border-color: rgba(236,72,153,0.2); }
+.tag-supply { background: rgba(168,85,247,0.05); color: #9333EA; border-color: rgba(168,85,247,0.2); }
+.tag-dhl { background: rgba(212,5,17,0.05); color: var(--red); border-color: rgba(212,5,17,0.2); }
+.tag-logistics { background: rgba(245,158,11,0.05); color: #D97706; border-color: rgba(245,158,11,0.2); }
+
+/* OUTCOMES */
+.outcomes-section { background: var(--surface); padding: clamp(5rem, 8vw, 9rem) 0; }
+.outcomes-intro { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: end; margin-bottom: 4rem; }
+.outcomes-intro-right { display: flex; flex-direction: column; gap: 1.5rem; align-self: end; }
+.outcomes-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
+.outcome-card { position: relative; border: 1.5px solid var(--border); border-radius: var(--r-xl); cursor: pointer; overflow: hidden; transition: all 0.3s ease; background: var(--surface); }
+.outcome-card:hover { border-color: var(--ink-5); box-shadow: var(--shadow-md); transform: translateY(-4px); }
+.outcome-card.expanded { grid-column: span 2; border-color: var(--red); box-shadow: var(--shadow-lg), 0 0 0 1px var(--red); }
+.oc-front { padding: 1.75rem; min-height: 200px; display: flex; flex-direction: column; }
+.oc-icon-wrap { width: 52px; height: 52px; border-radius: var(--r-lg); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1.25rem; flex-shrink: 0; }
+.oc-seq { font-family: var(--f-mono); font-size: 0.6rem; font-weight: 500; color: var(--ink-5); letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+.oc-title { font-family: var(--f-display); font-size: 1.1rem; font-weight: 700; color: var(--ink); line-height: 1.2; margin-bottom: 0.6rem; }
+.oc-tagline { font-size: 0.83rem; color: var(--ink-4); line-height: 1.55; flex: 1; }
+.oc-arrow { display: flex; align-items: center; justify-content: flex-end; margin-top: 1.25rem; }
+.oc-chevron { width: 28px; height: 28px; border-radius: var(--r-sm); border: 1.5px solid var(--border-strong); background: var(--surface-2); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; color: var(--ink-4); transition: all 0.22s; }
+.outcome-card:hover .oc-chevron { border-color: var(--red); color: var(--red); background: var(--red-glow); }
+.outcome-card.expanded .oc-chevron { background: var(--red); border-color: var(--red); color: #fff; transform: rotate(180deg); }
+.oc-detail { max-height: 0; overflow: hidden; transition: max-height 0.45s ease, opacity 0.3s ease; opacity: 0; border-top: 0 solid var(--border); }
+.outcome-card.expanded .oc-detail { max-height: 600px; opacity: 1; border-top: 1px solid var(--border); }
+.oc-detail-inner { padding: 1.75rem; display: flex; flex-direction: column; gap: 1.5rem; }
+.oc-detail-label { font-family: var(--f-mono); font-size: 0.62rem; font-weight: 500; color: var(--ink-5); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.75rem; }
+.oc-detail-text { font-size: 0.875rem; color: var(--ink-3); line-height: 1.65; }
+.oc-detail-list { display: flex; flex-direction: column; gap: 0.45rem; }
+.oc-detail-list li { display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.85rem; color: var(--ink-3); line-height: 1.5; }
+.oc-detail-list li::before { content: '→'; color: var(--red); font-weight: 700; flex-shrink: 0; }
+.oc-partners-row { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+/* ASSESSMENT */
+.assessment-section { background: var(--surface-2); padding: clamp(4rem, 6vw, 6rem) 0; }
+.assessment-container { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-xl); overflow: hidden; box-shadow: var(--shadow-xl); display: flex; position: relative; transition: all 0.4s ease; }
+.assessment-left { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.assessment-progress-wrap { padding: 1.25rem 2rem; background: var(--ink); border-bottom: 1px solid var(--ink-2); }
+.assessment-progress-bar { height: 4px; background: rgba(255,255,255,0.15); border-radius: var(--r-full); margin-bottom: 0.5rem; overflow: hidden; }
+.assessment-progress-fill { height: 100%; background: var(--yellow); transition: width 0.4s ease; }
+.assessment-progress-label { display: flex; justify-content: space-between; font-size: 0.75rem; color: rgba(255,255,255,0.6); font-family: var(--f-mono); }
+.assessment-panel { padding: 2rem; min-height: 340px; }
+.question-block { display: none; }
+.question-block.active { display: block; animation: fadeUp 0.3s ease both; }
+.question-pillar { font-family: var(--f-mono); font-size: 0.7rem; color: var(--red); text-transform: uppercase; margin-bottom: 0.4rem; font-weight: 600; letter-spacing: 0.05em; }
+.question-text { font-family: var(--f-display); font-size: 1.3rem; font-weight: 700; color: var(--ink); line-height: 1.3; margin-bottom: 0.5rem; }
+.question-context { font-size: 0.85rem; color: var(--ink-4); margin-bottom: 1.25rem; line-height: 1.5; }
+.answer-options { display: flex; flex-direction: column; gap: 0.5rem; }
+.answer-option { display: flex; align-items: center; gap: 0.75rem; padding: 0.7rem 1rem; border: 1.5px solid var(--border); border-radius: var(--r-md); cursor: pointer; background: var(--surface); transition: all 0.2s; text-align: left; }
+.answer-option:hover { border-color: var(--yellow-dark); background: #FFFDF0; }
+.answer-option.selected { border-color: var(--red); background: #FFF8F8; }
+.answer-option-score { width: 24px; height: 24px; border-radius: 50%; background: var(--surface-2); border: 1.5px solid var(--border-strong); display: flex; align-items: center; justify-content: center; font-family: var(--f-mono); font-size: 0.7rem; font-weight: 600; color: var(--ink-4); flex-shrink: 0; }
+.answer-option.selected .answer-option-score { background: var(--red); border-color: var(--red); color: #fff; }
+.answer-option-text { font-size: 0.85rem; color: var(--ink-3); line-height: 1.4; }
+.answer-option-text strong { display: block; font-size: 0.8rem; color: var(--ink-5); }
+.question-nav { display: flex; justify-content: flex-start; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+.btn-prev { padding: 0.4rem 0.8rem; border-radius: var(--r-sm); font-size: 0.8rem; font-weight: 600; cursor: pointer; background: transparent; color: var(--ink-4); border: 1.5px solid var(--border); font-family: inherit; }
+.btn-prev:hover { background: var(--surface-2); color: var(--ink); }
+
+/* RADAR PANEL — SVG CHART */
+.assessment-right { width: 360px; background: var(--surface-2); border-left: 1px solid var(--border); padding: 2rem 1.5rem; display: flex; flex-direction: column; transition: width 0.3s ease, padding 0.3s ease, opacity 0.3s ease; overflow: hidden; }
+.assessment-right.collapsed { width: 50px; padding: 0; cursor: pointer; background: var(--ink-2); display: flex; align-items: center; justify-content: center; }
+.assessment-right.collapsed:hover { background: var(--ink); }
+.radar-content { transition: opacity 0.2s ease; width: 100%; }
+.assessment-right.collapsed .radar-content { opacity: 0; pointer-events: none; display: none; }
+.radar-collapsed-text { display: none; writing-mode: vertical-rl; transform: rotate(180deg); color: #fff; font-family: var(--f-mono); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; font-weight: 600; }
+.assessment-right.collapsed .radar-collapsed-text { display: block; }
+.radar-title { font-family: var(--f-display); font-size: 1rem; font-weight: 700; color: var(--ink); margin-bottom: 0.5rem; text-align: center; }
+.radar-subtitle { font-size: 0.72rem; color: var(--ink-4); text-align: center; margin-bottom: 1rem; line-height: 1.4; }
+
+/* SVG RADAR CHART */
+#radarChart { width: 100%; max-width: 300px; margin: 0 auto; display: block; }
+.radar-legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.4rem 0.8rem; margin-top: 0.75rem; }
+.radar-legend-item { display: flex; align-items: center; gap: 0.35rem; font-size: 0.65rem; color: var(--ink-4); font-weight: 500; line-height: 1.3; }
+.radar-legend-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+/* SCORE RING */
+.score-ring-wrap { display: flex; flex-direction: column; align-items: center; margin: 1rem 0 0.5rem; }
+#scoreRing { width: 80px; height: 80px; }
+.score-ring-label { text-align: center; margin-top: 0.25rem; font-size: 0.7rem; color: var(--ink-4); font-family: var(--f-mono); }
+
+/* RESULTS */
+.results-panel { padding: 2.5rem; display: none; animation: fadeUp 0.4s ease both; }
+.results-hero { margin-bottom: 2rem; }
+.results-hero h3 { font-family: var(--f-display); font-size: 1.6rem; font-weight: 700; color: var(--ink); margin-bottom: 0.5rem; }
+.results-hero p { font-size: 0.95rem; color: var(--ink-4); line-height: 1.6; max-width: 600px; }
+
+/* Updated Score Grid for 5 Dimensions */
+.score-summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.75rem; margin-bottom: 2rem; }
+.score-summary-card { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--r-md); padding: 1rem; text-align: center; display: flex; flex-direction: column; justify-content: space-between; }
+.ssc-label { font-family: var(--f-mono); font-size: 0.6rem; color: var(--ink-5); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.4rem; }
+.ssc-score { font-family: var(--f-display); font-size: 1.5rem; font-weight: 800; }
+.ssc-desc { font-size: 0.68rem; color: var(--ink-4); margin-top: 0.2rem; }
+.ssc-bar { height: 3px; background: var(--surface-3); border-radius: 3px; margin-top: 0.6rem; overflow: hidden; }
+.ssc-bar-fill { height: 100%; border-radius: 3px; transition: width 0.6s ease 0.2s; }
+
+.roadmap-section { margin-bottom: 2rem; }
+.roadmap-section h3 { font-family: var(--f-display); font-size: 1.25rem; font-weight: 700; color: var(--ink); margin-bottom: 1rem; }
+.roadmap-container { display: flex; flex-direction: column; gap: 0.5rem; }
+.roadmap-step { display: flex; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-md); overflow: hidden; transition: all 0.2s; align-items: stretch; }
+.roadmap-step:hover { border-color: var(--border-strong); box-shadow: var(--shadow-sm); transform: translateY(-1px); }
+.roadmap-month { background: var(--surface-2); padding: 0.75rem 1.25rem; display: flex; flex-direction: column; justify-content: center; align-items: center; border-right: 1px solid var(--border); min-width: 90px; }
+.rm-label { font-family: var(--f-mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-5); font-weight: 600; margin-bottom: 0.1rem; }
+.rm-num { font-family: var(--f-display); font-size: 1.4rem; font-weight: 700; color: var(--ink); line-height: 1; }
+.roadmap-content { padding: 1rem 1.25rem; flex: 1; display: flex; flex-direction: column; justify-content: center; }
+.roadmap-content h4 { font-family: var(--f-display); font-size: 1rem; font-weight: 700; color: var(--ink); margin-bottom: 0.2rem; }
+.roadmap-content p { font-size: 0.85rem; color: var(--ink-3); line-height: 1.4; margin-bottom: 0.5rem; }
+.roadmap-priority { font-family: var(--f-mono); font-size: 0.62rem; font-weight: 600; padding: 0.15rem 0.5rem; border-radius: var(--r-full); }
+.priority-critical { background: rgba(212,5,17,0.1); color: var(--red); }
+.priority-high { background: rgba(245,158,11,0.1); color: #D97706; }
+.priority-medium { background: rgba(16,185,129,0.1); color: #059669; }
+
+.results-cta-box { background: var(--ink); color: #fff; border-radius: var(--r-lg); padding: 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; }
+.results-cta-box h4 { font-family: var(--f-display); font-size: 1.1rem; font-weight: 700; margin-bottom: 0.2rem; color: #fff; }
+.results-cta-box p { font-size: 0.85rem; color: rgba(255,255,255,0.7); margin-bottom:0; }
+.btn-restart { background: transparent; color: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.2); padding: 0.5rem 1rem; border-radius: var(--r-sm); font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: var(--f-body); margin-top: 0.5rem; display: inline-block; }
+.btn-restart:hover { color: #fff; border-color: rgba(255,255,255,0.5); }
+
+/* ═══ EMAIL GATE & TEASER BLUR ═══ */
+.content-locked {
+  filter: blur(6px);
+  pointer-events: none;
+  user-select: none;
+  opacity: 0.5;
+  transition: filter 0.5s ease, opacity 0.5s ease;
+}
+.content-unlocked {
+  filter: blur(0);
+  pointer-events: auto;
+  opacity: 1;
+}
+.email-gate-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2.5rem;
+  text-align: center;
+}
+.email-gate-icon {
+  width: 72px; height: 72px;
+  background: linear-gradient(135deg, var(--red-glow), rgba(255,204,0,0.1));
+  border: 2px solid rgba(212,5,17,0.15);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 1.5rem;
+  font-size: 1.8rem;
+}
+.email-gate-title {
+  font-family: var(--f-display);
+  font-size: 1.6rem; font-weight: 800;
+  color: var(--ink); line-height: 1.15;
+  margin-bottom: 0.6rem;
+  max-width: 420px;
+}
+.email-gate-subtitle {
+  font-size: 0.95rem; color: var(--ink-4);
+  line-height: 1.65; max-width: 460px;
+  margin: 0 auto 0.75rem;
+}
+.email-gate-perks {
+  display: flex; gap: 1.5rem; flex-wrap: wrap;
+  justify-content: center; margin: 1rem 0 1.75rem;
+}
+.email-gate-perk {
+  display: flex; align-items: center; gap: 0.4rem;
+  font-size: 0.8rem; font-weight: 600; color: var(--ink-3);
+}
+.email-gate-perk-dot {
+  width: 18px; height: 18px;
+  background: rgba(22,163,74,0.12);
+  color: #16A34A;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.6rem; font-weight: 700; flex-shrink: 0;
+}
+.email-gate-form {
+  display: flex; gap: 0.65rem; flex-wrap: wrap;
+  justify-content: center; width: 100%; max-width: 480px;
+}
+.email-gate-input {
+  flex: 1; min-width: 220px;
+  padding: 0.85rem 1.2rem;
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--r-md);
+  font-family: var(--f-body);
+  font-size: 0.95rem; color: var(--ink);
+  background: var(--surface);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.email-gate-input:focus {
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px var(--red-glow);
+}
+.email-gate-input.error {
+  border-color: var(--red);
+  background: #FFF8F8;
+}
+.email-gate-btn {
+  padding: 0.85rem 1.75rem;
+  background: var(--red); color: #fff;
+  border: none; border-radius: var(--r-md);
+  font-family: var(--f-body); font-weight: 700;
+  font-size: 0.95rem; cursor: pointer;
+  transition: all 0.22s;
+  display: flex; align-items: center; gap: 0.5rem;
+  white-space: nowrap;
+  box-shadow: 0 4px 16px rgba(212,5,17,0.25);
+}
+.email-gate-btn:hover {
+  background: var(--red-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(212,5,17,0.35);
+}
+.email-gate-error {
+  font-size: 0.8rem; color: var(--red);
+  font-weight: 600; margin-top: 0.5rem;
+  width: 100%; text-align: center;
+  min-height: 1.2em;
+  animation: fadeUp 0.2s ease both;
+}
+.email-gate-privacy {
+  font-size: 0.72rem; color: var(--ink-5);
+  margin-top: 1rem; line-height: 1.5;
+}
+.email-gate-privacy a { color: var(--ink-4); text-decoration: underline; }
+
+/* ═══ RESULTS ACTION BAR (Connect Now + Download Track) ═══ */
+.results-action-bar {
+  display: flex;
+  gap: 0.875rem;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 1.75rem;
+  padding: 1.5rem 2rem;
+  background: linear-gradient(135deg, #fafafa 0%, #f0f0f5 100%);
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-md);
+  animation: fadeUp 0.5s ease 0.2s both;
+}
+.results-action-bar-label {
+  font-family: var(--f-mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-5);
+  font-weight: 600;
+  flex: 0 0 100%;
+  margin-bottom: 0.25rem;
+}
+.btn-connect-now {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--red);
+  color: #fff;
+  font-family: var(--f-body);
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 0.85rem 1.75rem;
+  border-radius: var(--r-md);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.22s, transform 0.18s, box-shadow 0.22s;
+  box-shadow: 0 4px 16px rgba(212,5,17,0.25);
+  position: relative;
+  overflow: hidden;
+}
+.btn-connect-now:hover {
+  background: var(--red-dark);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(212,5,17,0.35);
+}
+.btn-connect-now:active {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(212,5,17,0.3);
+}
+.btn-download-track {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.85rem 1.75rem;
+  border-radius: var(--r-md);
+  border: 1.5px solid var(--border-strong);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.22s, border-color 0.22s, transform 0.18s, box-shadow 0.22s;
+}
+.btn-download-track:hover {
+  background: var(--surface-2);
+  border-color: var(--ink-3);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+.btn-download-track:active {
+  transform: translateY(-1px);
+}
+.btn-download-track.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+.btn-download-track .btn-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--border-strong);
+  border-top-color: var(--ink);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  display: none;
+}
+.btn-download-track.loading .btn-spinner { display: inline-block; }
+.btn-download-track.loading .btn-dl-icon { display: none; }
+
+/* PDF toast notification */
+.pdf-toast {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: var(--ink);
+  color: #fff;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--r-md);
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: var(--f-body);
+  box-shadow: var(--shadow-lg);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transform: translateY(4rem);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  pointer-events: none;
+}
+.pdf-toast.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+.pdf-toast.success { background: #059669; }
+.pdf-toast.error { background: var(--red); }
+
+/* PROCESS TIMELINE */
+.process-section { background: var(--surface-2); padding: clamp(4rem, 6vw, 7rem) 0; }
+.process-timeline { position: relative; }
+.process-timeline::before { content: ''; position: absolute; left: 24px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--yellow), var(--red), var(--ink-6)); }
+.process-step { display: flex; gap: 1.5rem; margin-bottom: 2rem; }
+.ps-node { width: 50px; height: 50px; border-radius: 50%; background: var(--surface); border: 2px solid var(--border-strong); display: flex; align-items: center; justify-content: center; font-family: var(--f-display); font-weight: 700; color: var(--ink-4); z-index: 1; flex-shrink: 0; transition: 0.3s; }
+.process-step:hover .ps-node { border-color: var(--red); color: var(--red); background: var(--red-glow); }
+.ps-content { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 1.5rem; flex: 1; transition: 0.3s; }
+.process-step:hover .ps-content { border-color: var(--ink-5); box-shadow: var(--shadow-sm); }
+.ps-phase { font-family: var(--f-mono); font-size: 0.6rem; color: var(--ink-5); text-transform: uppercase; margin-bottom: 0.4rem; }
+.ps-name { font-family: var(--f-display); font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
+.ps-desc { font-size: 0.85rem; color: var(--ink-3); line-height: 1.5; margin-bottom: 1rem; }
+.ps-metrics { display: flex; gap: 1rem; flex-wrap: wrap; }
+.ps-metric { font-size: 0.75rem; color: var(--ink-4); display: flex; align-items: center; gap: 0.3rem; }
+.ps-metric::before { content: '✓'; color: var(--yellow-dark); }
+
+/* TRUST SECTION */
+.trust-section { background: var(--surface); padding: clamp(3rem, 4vw, 4rem) 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.trust-inner { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem; }
+.trust-card { display: flex; gap: 1rem; align-items: flex-start; }
+.trust-icon { width: 44px; height: 44px; border-radius: var(--r-md); background: var(--surface-2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+.trust-text h4 { font-family: var(--f-display); font-size: 0.95rem; font-weight: 700; margin-bottom: 0.3rem; }
+.trust-text p { font-size: 0.8rem; color: var(--ink-4); line-height: 1.5; }
+
+/* CTA & FOOTER */
+.cta-section { background: var(--ink-2); padding: 5rem 0; text-align: center; position: relative; overflow: hidden; }
+.cta-section::before { content: ''; position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(212,5,17,0.2) 0%, transparent 70%); top: -200px; right: -100px; filter: blur(80px); }
+.cta-h2 { font-family: var(--f-display); font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; color: #fff; margin-bottom: 1rem; position: relative; }
+.cta-desc { font-size: 1rem; color: rgba(255,255,255,0.6); max-width: 600px; margin: 0 auto 2rem; position: relative; }
+.cta-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; position: relative; }
+.cta-reassurance { font-size: 0.75rem; color: rgba(255,255,255,0.35); margin-top: 1rem; position: relative; }
+footer { background: #050506; padding: 2rem 0; font-size: 0.8rem; color: rgba(255,255,255,0.4); border-top: 1px solid rgba(255,255,255,0.05); }
+.footer-in { max-width: var(--max); margin: 0 auto; padding: 0 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+.footer-links { display: flex; gap: 1.5rem; }
+.footer-links a { color: rgba(255,255,255,0.35); transition: color 0.2s; font-size: 0.75rem; }
+.footer-links a:hover { color: rgba(255,255,255,0.7); }
+
+/* ═══════════════════════════════════════════════════════════════════ */
+/* ECOSYSTEM PARTNER MODAL & INTERACTIVE STYLES                        */
+/* ═══════════════════════════════════════════════════════════════════ */
+
+/* Interactive Partner Keyword Trigger (For injected text links) */
+.partner-trigger-link {
+  position: relative;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 600;
+  color: inherit;
+  border-bottom: 1.5px dashed var(--red, #D40511);
+  transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.partner-trigger-link:hover {
+  color: var(--ink);
+  background: var(--red-glow, rgba(212, 5, 17, 0.08));
+  border-bottom-style: solid;
+  border-bottom-color: var(--yellow, #FFCC00);
+}
+.partner-trigger-link::after {
+  content: '✦';
+  font-size: 0.6rem;
+  color: var(--red, #D40511);
+  transition: transform 0.25s ease;
+}
+.partner-trigger-link:hover::after {
+  transform: scale(1.2) rotate(90deg);
+  color: var(--yellow, #FFCC00);
+}
+
+/* Badge hover state for partner trigger */
+.partner-badge.partner-trigger-link {
+  border-bottom: 1.5px solid var(--border-strong); /* override dash */
+}
+.partner-badge.partner-trigger-link:hover {
+  background: var(--surface-2);
+  border-color: var(--red);
+  color: var(--ink);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Modal Overlay Background */
+.partner-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(10, 10, 11, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s ease;
+  padding: 20px;
+}
+.partner-modal-overlay.active {
+  opacity: 1; pointer-events: auto;
+}
+
+/* Modal Window Container */
+.partner-modal-container {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 4px solid var(--red, #D40511);
+  width: 100%; max-width: 600px;
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-xl);
+  transform: translateY(20px) scale(0.98);
+  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  max-height: 85vh;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.partner-modal-overlay.active .partner-modal-container {
+  transform: translateY(0) scale(1);
+}
+
+/* Modal Header */
+.partner-modal-header {
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: flex-start;
+  background: var(--surface-2);
+}
+.partner-modal-header-text h3 {
+  font-family: var(--f-display);
+  font-size: 1.3rem; font-weight: 700;
+  margin: 0 0 4px 0; color: var(--ink);
+}
+.partner-modal-header-text p {
+  font-family: var(--f-mono);
+  color: var(--ink-4);
+  font-size: 0.65rem; margin: 0;
+  text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;
+}
+.partner-modal-close-btn {
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  color: var(--ink-4);
+  font-size: 1.2rem;
+  width: 32px; height: 32px;
+  border-radius: var(--r-sm);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 0.2s ease;
+}
+.partner-modal-close-btn:hover {
+  background: var(--red-glow);
+  color: var(--red); border-color: var(--red);
+}
+
+/* Modal Content Area */
+.partner-modal-body {
+  padding: 2rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* Partner Grid Layout */
+.partner-cards-grid {
+  display: flex; flex-direction: column; gap: 1.25rem;
+}
+
+/* Single Partner Card */
+.partner-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 1.5rem;
+  display: flex; flex-direction: column; gap: 1rem;
+  transition: all 0.2s ease;
+  position: relative; overflow: hidden;
+}
+.partner-card:hover {
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Partner Brand Presentation */
+.partner-brand-header {
+  display: flex; align-items: center; gap: 12px;
+}
+.partner-logo-fallback {
+  background: var(--red-glow);
+  color: var(--red);
+  font-family: var(--f-mono);
+  font-weight: 700; font-size: 0.9rem;
+  padding: 6px 12px; border-radius: var(--r-sm);
+}
+.partner-name {
+  font-family: var(--f-display);
+  font-size: 1.1rem; font-weight: 700; color: var(--ink);
+}
+.partner-description {
+  font-size: 0.85rem; line-height: 1.5; color: var(--ink-3); margin: 0;
+}
+
+/* Action Button */
+.partner-connect-btn {
+  align-self: flex-start;
+  font-family: var(--f-body);
+  background: var(--surface-2);
+  color: var(--ink);
+  border: 1px solid var(--border-strong);
+  padding: 0.5rem 1rem;
+  font-weight: 600; font-size: 0.8rem;
+  border-radius: var(--r-sm);
+  cursor: pointer; transition: all 0.2s ease;
+  display: inline-flex; align-items: center; gap: 6px;
+  text-decoration: none;
+}
+.partner-connect-btn:hover {
+  background: var(--red); color: #fff; border-color: var(--red);
+}
+
+/* Premium Placeholder State */
+.partner-placeholder-state { text-align: center; padding: 2rem 1rem; }
+.partner-placeholder-icon { font-size: 2rem; color: var(--yellow); margin-bottom: 1rem; animation: pulseGlow 2s infinite ease-in-out; }
+.partner-placeholder-text { font-size: 0.9rem; line-height: 1.6; color: var(--ink-4); max-width: 400px; margin: 0 auto; }
+
+/* Responsiveness adjustments */
+@media (max-width: 1100px) { .stage-tabs { grid-template-columns: repeat(5, 1fr); } }
+@media (max-width: 900px) { 
+  .nav-links { display: none; }
+  .hero-content { grid-template-columns: 1fr; gap: 3rem; }
+  .jp-body { grid-template-columns: 1fr; }
+  .jp-col { border-right: none; border-bottom: 1px solid var(--border); }
+  .assessment-container { flex-direction: column; }
+  .assessment-right { width: 100%; border-left: none; border-top: 1px solid var(--border); }
+}
+@media (max-width: 800px) { .outcomes-intro { grid-template-columns: 1fr; gap: 1.5rem; } }
+@media (max-width: 768px) { 
+  .roadmap-step { flex-direction: column; } 
+  .roadmap-month { border-right: none; border-bottom: 1px solid var(--border); padding: 0.75rem; flex-direction: row; justify-content: flex-start; gap: 0.75rem; } 
+  .results-cta-box { flex-direction: column; text-align: left; align-items: flex-start; } 
+  .score-summary-grid { grid-template-columns: repeat(2, 1fr); } 
+  .results-action-bar { padding: 1.25rem; gap: 0.75rem; } 
+  .btn-connect-now, .btn-download-track { width: 100%; justify-content: center; } 
+}
+@media (max-width: 700px) { 
+  .jp-header { flex-direction: column; }
+  .trust-inner { grid-template-columns: 1fr; gap: 1.5rem; }
+}
+@media (max-width: 600px) { 
+  .sp-divider { display: none; }
+  .stage-tabs { grid-template-columns: repeat(2, 1fr); }
+  .outcomes-grid { grid-template-columns: 1fr; }
+  .outcome-card.expanded { grid-column: span 1; }
+}
+</style>
+</head>
+<body>
+
+<div class="urgency-bar">
+  <span>🔥 Q3 2025 Program Cohort</span>
+  <span class="urgency-badge">Limited to 40 Companies</span>
+  <span>— Applications Close 31 July 2025</span>
+</div>
+
+<nav id="nav">
+  <div class="nav-in">
+    <div class="nav-brand">
+      <div class="dhl-mark">DHL</div>
+      <div>
+        <div class="brand-txt">Global Expansion Navigation Zone</div>
+        <div class="brand-sub-txt">India to Global · Incubator Program</div>
+      </div>
+    </div>
+    <div class="nav-links">
+      <a class="nav-a" href="#journey">Your Journey</a>
+      <a class="nav-a" href="#outcomes">Outcomes</a>
+      <a class="nav-a" href="#process">How to Join</a>
+      <a class="btn btn-ghost btn-sm" href="onboarding.html" style="margin-left:0.5rem; border-color:var(--border-strong);">Connect Now</a>
+      <a class="btn btn-red btn-sm" href="#assessment" style="margin-left:0.5rem">Check My Readiness →</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero" id="home">
+  <div class="hero-grid"></div>
+  <div class="hero-orb-1"></div>
+  <div class="hero-orb-2"></div>
+  <div class="hero-content">
+    <div>
+      <div class="hero-tag"><span class="hero-tag-dot"></span>India to Global Expansion Program</div>
+      <h1 class="hero-h1">Your Global <span class="accent">Revenue Waits.</span> DHL Gets You There.</h1>
+      <p class="hero-desc">A guided, 12–18 month expansion system that takes Indian businesses from domestic success to international revenue — with legal, financial, logistics, and technology partners already built in.</p>
+      <div class="hero-btns">
+        <a href="#assessment" class="btn btn-yellow btn-lg">Check My Readiness →</a>
+        <a href="onboarding.html" class="btn btn-ghost-dark btn-lg">Connect Now</a>
+      </div>
+    </div>
+    <div>
+      <div class="hero-stats">
+        <div class="stat-card">
+          <div class="stat-num">₹ → <span class="stat-accent">$</span></div>
+          <div class="stat-label">India to Global revenue in 12–18 months</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">220<span class="stat-accent">+</span></div>
+          <div class="stat-label">Countries and territories reached through DHL logistics</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">4<span class="stat-accent">x</span></div>
+          <div class="stat-label">Faster market entry vs. solo expansion</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">₹0</div>
+          <div class="stat-label">Wasted on wrong partners — vetted ecosystem</div>
+        </div>
+      </div>
+      <div class="hero-social-proof" style="display:flex; margin-top:1rem; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:var(--r-lg); padding:1rem 1.5rem; gap:2rem; justify-content:center; flex-wrap:wrap;">
+        <div class="sp-item"><div class="sp-num" data-count="320">0</div><div class="sp-label">Indian Businesses Onboarded</div></div>
+        <div class="sp-divider"></div>
+        <div class="sp-item"><div class="sp-num" data-count="34">0</div><div class="sp-label">Active Ecosystem Partners</div></div>
+        <div class="sp-divider"></div>
+        <div class="sp-item"><div class="sp-num" data-count="12">0</div><div class="sp-label">Markets Actively Covered</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="trust-section" id="trust">
+  <div class="wrap">
+    <div class="trust-inner">
+      <div class="trust-card reveal">
+        <div class="trust-icon">🌐</div>
+        <div class="trust-text">
+          <h4>DHL's Global Network Backbone</h4>
+          <p>Over 220 countries, 400,000+ employees, and 50+ years of international logistics expertise powering your expansion.</p>
+        </div>
+      </div>
+      <div class="trust-card reveal" data-d="1">
+        <div class="trust-icon">🤝</div>
+        <div class="trust-text">
+          <h4>34 Pre-Vetted Ecosystem Partners</h4>
+          <p>Every legal, financial, tech, and marketing partner has been audited — you get trusted introductions, not cold searches.</p>
+        </div>
+      </div>
+      <div class="trust-card reveal" data-d="2">
+        <div class="trust-icon">📊</div>
+        <div class="trust-text">
+          <h4>Data-Driven, Not Opinion-Based</h4>
+          <p>Your PIGEP roadmap is built on cohort benchmarks from 320+ Indian businesses who've expanded before you.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="journey-section" id="journey">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">Your Personalised Expansion Path</div>
+      <h2 class="sec-title">Choose Your Market.<br>See Your Journey.</h2>
+      <p class="sec-desc">Every market has a different regulatory environment, preferred payment methods, and competitive landscape. Select your target to see the exact playbook.</p>
+    </div>
+
+    <div class="region-row reveal" data-d="1">
+      <button class="region-btn active" onclick="selectRegion('north-america', this)"><span>🇺🇸</span> North America</button>
+      <button class="region-btn" onclick="selectRegion('europe', this)"><span>🇪🇺</span> Europe</button>
+      <button class="region-btn" onclick="selectRegion('mena', this)"><span>🇦🇪</span> MENA</button>
+      <button class="region-btn" onclick="selectRegion('apac', this)"><span>🇸🇬</span> APAC / SEA</button>
+    </div>
+
+    <div class="stage-tabs reveal" data-d="2" id="stageTabs"></div>
+    <div class="stage-connector"><div class="stage-connector-fill" id="stageProgress" style="width:10%"></div></div>
+    <div class="journey-panel reveal" data-d="3" id="journeyPanel"></div>
+  </div>
+</section>
+
+<section class="outcomes-section sec-alt" id="outcomes">
+  <div class="wrap">
+    <div class="outcomes-intro">
+      <div>
+        <div class="eyebrow reveal">Outcomes, Not Features</div>
+        <h2 class="sec-title reveal" data-d="1">What You Actually<br>Walk Away With</h2>
+        <p class="sec-desc reveal" data-d="2">We don't sell capabilities. We deliver business results. Every stage of the DHL expansion journey is engineered toward a specific, measurable outcome that compounds your global growth.</p>
+      </div>
+      <div class="outcomes-intro-right reveal" data-d="2">
+        <p style="font-size:1rem;color:var(--ink-4);line-height:1.65">Click any outcome below to see exactly how DHL and our ecosystem partners make it happen for your business.</p>
+        <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+          <a href="#assessment" class="btn btn-red btn-md">Check Your Readiness →</a>
+          <a href="onboarding.html" class="btn btn-ghost btn-md">Connect Now</a>
+        </div>
+      </div>
+    </div>
+    <div class="outcomes-grid reveal" data-d="1" id="outcomesGrid"></div>
+  </div>
+</section>
+
+<section class="assessment-section" id="assessment">
+  <div class="wrap" style="max-width: 1100px;">
+    <div class="sec-head reveal">
+      <div class="eyebrow">Strategic Advisory Tool</div>
+      <h2 class="sec-title">Where Do You Stand Today?</h2>
+      <p class="sec-desc" style="font-size: 0.95rem;">Answer 10 operational questions. Our multi-dimensional engine maps your exact readiness across Foundation, Finance, Digital, Scale, and Marketing — generating a personalized roadmap in under 3 minutes.</p>
+    </div>
+
+    <div class="assessment-container reveal" data-d="1" id="assessmentMainContainer">
+      <div class="assessment-left">
+        <div class="assessment-progress-wrap" id="quizProgWrap">
+          <div class="assessment-progress-bar"><div class="assessment-progress-fill" id="progressFill" style="width:10%"></div></div>
+          <div class="assessment-progress-label">
+            <span id="questionCounter">Question 1 of 10</span>
+            <span id="progressPct">10%</span>
+          </div>
+        </div>
+        <div class="assessment-panel" id="assessmentPanel"></div>
+        <div class="results-panel" id="resultsPanel"></div>
+      </div>
+
+      <div class="assessment-right" id="radarTile" style="position: relative;" onclick="if(this.classList.contains('collapsed')) this.classList.remove('collapsed')">
+        <div class="radar-collapsed-text">READINESS RADAR</div>
+        <div class="radar-content">
+          <button onclick="event.stopPropagation(); document.getElementById('radarTile').classList.add('collapsed')" style="position:absolute; top: 1rem; right: 1rem; border:none; background:transparent; font-size:1.5rem; cursor:pointer; color:var(--ink-4); line-height:1; transition:color 0.2s;" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='var(--ink-4)'">&times;</button>
+          
+          <div class="radar-title">OPERATIONAL MATRIX</div>
+          <div class="radar-subtitle">Your cross-functional capabilities update live.</div>
+          
+          <div class="score-ring-wrap">
+            <svg id="scoreRing" viewBox="0 0 80 80">
+              <circle cx="40" cy="40" r="32" fill="none" stroke="var(--surface-3)" stroke-width="7"/>
+              <circle id="scoreRingArc" cx="40" cy="40" r="32" fill="none" stroke="var(--red)" stroke-width="7" stroke-linecap="round"
+                stroke-dasharray="201" stroke-dashoffset="201" transform="rotate(-90 40 40)" style="transition: stroke-dashoffset 0.6s ease, stroke 0.4s ease;"/>
+              <text id="scoreRingText" x="40" y="44" text-anchor="middle" font-family="Syne,sans-serif" font-weight="800" font-size="16" fill="var(--ink)">0%</text>
+            </svg>
+            <div class="score-ring-label">COMPOSITE SCORE</div>
+          </div>
+
+          <svg id="radarChart" viewBox="0 0 360 360" xmlns="http://www.w3.org/2000/svg"></svg>
+          <div class="radar-legend" id="radarLegend"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="process-section" id="process">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">How to Join the Program</div>
+      <h2 class="sec-title">From Application to<br>International Revenue in 4 Stages</h2>
+    </div>
+    <div class="process-timeline reveal" data-d="1" id="processTimeline"></div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <div class="wrap">
+    <div class="cta-h2">Your International Revenue Starts Here</div>
+    <p class="cta-desc">Join 320+ Indian businesses already expanding globally with DHL's ecosystem. A 3-minute assessment is all it takes to see your personalised expansion path.</p>
+    <div class="cta-btns">
+      <a href="#assessment" class="btn btn-yellow btn-lg">Start Free Assessment →</a>
+      <a href="onboarding.html" class="btn btn-ghost-dark btn-lg">Connect Now</a>
+    </div>
+    <p class="cta-reassurance">No commitment required. Free assessment. Results in 3 minutes.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-in">
+    <div style="display:flex;align-items:center;gap:0.75rem;">
+      <div class="dhl-mark" style="font-size: 0.8rem;">DHL</div>
+      <div style="font-size:0.75rem;color:rgba(255,255,255,0.3);">© 2025 DHL Express. All rights reserved.</div>
+    </div>
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms</a>
+      <a href="#">Contact DHL</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ═══════════════════════ TOOLTIP ENGINE ═══════════════════════ */
+const t = (term, tip) => `<span class="tooltip" data-tip="${tip}">${term}</span>`;
+
+const globalTooltip = document.createElement('div');
+globalTooltip.className = 'global-tooltip';
+document.body.appendChild(globalTooltip);
+
+document.addEventListener('mouseover', (e) => {
+  const target = e.target.closest('.tooltip');
+  if (!target) return;
+  const tipText = target.getAttribute('data-tip');
+  if (!tipText) return;
+  globalTooltip.textContent = tipText;
+  globalTooltip.classList.add('show');
+  globalTooltip.classList.remove('arrow-top');
+  const rect = target.getBoundingClientRect();
+  const ttWidth = globalTooltip.offsetWidth;
+  const ttHeight = globalTooltip.offsetHeight;
+  let left = rect.left + (rect.width / 2) - (ttWidth / 2);
+  let top = rect.top - ttHeight - 8;
+  if (left < 10) left = 10;
+  if (left + ttWidth > window.innerWidth - 10) left = window.innerWidth - ttWidth - 10;
+  if (top < 10) { top = rect.bottom + 8; globalTooltip.classList.add('arrow-top'); }
+  globalTooltip.style.left = left + 'px';
+  globalTooltip.style.top = top + 'px';
+});
+document.addEventListener('mouseout', (e) => { if (e.target.closest('.tooltip')) globalTooltip.classList.remove('show'); });
+window.addEventListener('scroll', () => globalTooltip.classList.remove('show'), { passive: true });
+
+/* ═══════════════════════ DATA (REGIONS, JOURNEY, OUTCOMES, PROCESS) ═══════════════════════ */
+
+const REGIONS = {
+  'north-america': {
+    label: 'North America',
+    flag: '🇺🇸',
+    marketSize: '$5.8T e-commerce market by 2025',
+    keyInsight: 'US consumers expect next-day delivery and frictionless returns — Amazon Prime has set the bar.',
+    topChallenge: 'State-by-state sales tax nexus rules are the #1 compliance trap for Indian exporters.',
+    context: {
+      1: [`Validate US landed unit economics — average US consumer basket is $85`, `Assess ${t('FEMA/ODI', 'Foreign Exchange Management Act / Overseas Direct Investment')} readiness for Delaware entity flip`],
+      2: ['File Delaware C-Corp or LLC; coordinate FEMA-compliant ODI remittance', 'Obtain US EIN and relevant state tax registrations (nexus analysis)'],
+      3: [`Ensure FDA 510(k), ${t('FCC', 'Federal Communications Commission')} or ${t('CPSC', 'Consumer Product Safety Commission')} certifications apply to your category`, 'Build US-export-dedicated production capacity and QA protocols'],
+      4: [`US ${t('D2C', 'Direct-to-Consumer')} Shopify storefront vs Amazon.com Vendor Central strategy`, 'Build distributor / rep channel plan for North America retail'],
+      5: [`Setup USD treasury with ${t('EEFC', 'Exchange Earners Foreign Currency')} accounts`, `Hedge USD/INR ${t('FX', 'Foreign Exchange')} exposure — USD has 2-6% annual volatility vs INR`],
+      6: [`Headless storefront on US ${t('CDN', 'Content Delivery Network')} — target <100ms TTFB from New York`, `EN-US locale, USD pricing, trust signals like BBB seal and US address`],
+      7: ['Integrate Stripe, PayPal, Affirm (buy now pay later)', 'Automate US state sales tax collection (TaxJar or Avalara)'],
+      8: ['Google Shopping + Meta Dynamic Product Ads for US audiences', `LinkedIn ${t('ABM', 'Account-Based Marketing')} for US enterprise B2B — $30/click CPL averages`],
+      9: [`DHL Express ${t('DDP', 'Delivered Duty Paid — seller settles import duties so buyer receives without surprises')} for all US shipments`, 'Volumetric packaging optimisation — US UPS/FedEx DIM weight pricing'],
+      10: [`Stage inventory at US ${t('3PL', 'Third-Party Logistics')} hub (New Jersey, Dallas, or LA)`, `Enable ${t('FBA', 'Fulfillment by Amazon')} for Amazon Prime badge — 2-day delivery eligibility`]
+    }
+  },
+  'europe': {
+    label: 'Europe (EU + UK)',
+    flag: '🇪🇺',
+    marketSize: '€887B European e-commerce revenue in 2024',
+    keyInsight: 'GDPR compliance and localized payment methods (iDEAL, Klarna, SEPA) are non-negotiable in Europe.',
+    topChallenge: 'Post-Brexit UK and EU are now two separate regulatory zones — many Indian brands try to treat them as one.',
+    context: {
+      1: [`Validate EU product-market fit across Germany, UK, and France first — they account for 55% of EU e-commerce`, `Map ${t('GDPR', 'General Data Protection Regulation')} obligations — fines up to 4% of global revenue`],
+      2: ['Incorporate UK Ltd or Netherlands BV (EU gateway hub)', `Register for UK VAT (£90K threshold) and EU ${t('OSS', 'One-Stop-Shop VAT filing system')} scheme`],
+      3: [`CE marking mandatory for electronics, toys, machinery in EU`, `${t('UKCA', 'UK Conformity Assessed')} marking needed separately for Great Britain post-Brexit`],
+      4: ['Evaluate Amazon EU (5 marketplaces) vs own headless storefront', `Identify EU ${t('B2B', 'Business-to-Business')} distributors — DACH region is highest per-order value`],
+      5: ['Setup Euro-denominated treasury account — EUR/INR hedging essential', `Ensure ${t('FEMA', 'Foreign Exchange Management Act')} compliance for outbound ODI/remittance to EU entity`],
+      6: ['Multi-language headless storefront: EN, DE, FR minimum', `Euro CDN deployment — target <50ms ${t('TTFB', 'Time to First Byte')} from Frankfurt`],
+      7: [`Integrate Klarna (SE/DE/NL), iDEAL (NL), ${t('SEPA', 'Single Euro Payments Area')} Direct Debit`, 'Automate EU VAT at checkout — rates vary from 17% (LU) to 27% (HU)'],
+      8: ['Localized ad campaigns per market — German consumers distrust generic "global" brands', `International ${t('SEO', 'Search Engine Optimization')} with hreflang tags — critical for multi-language indexing`],
+      9: [`DHL Express ${t('DDP', 'Delivered Duty Paid')} for EU customs — eliminates buyer surprise charges`, 'DHL Parcel UK service for cost-effective British Isles delivery'],
+      10: ['Stage inventory in central EU hub (Netherlands or Germany) for 2-3 day EU-wide delivery', 'DHL Supply Chain EU warehousing with multi-country shipping capability']
+    }
+  },
+  'mena': {
+    label: 'MENA (UAE / KSA)',
+    flag: '🇦🇪',
+    marketSize: '$50B MENA e-commerce market — 25% YoY growth rate',
+    keyInsight: 'India-UAE CEPA (2022) has reduced tariffs to near-zero on 97% of Indian goods — a massive structural advantage.',
+    topChallenge: 'MENA consumers expect same-day or next-day delivery. Noon.com and Amazon.ae have raised the bar significantly.',
+    context: {
+      1: ['Validate UAE and KSA demand using Google Trends Arabic + Noon bestseller analysis', `Identify Halal certification requirements — mandatory for food, cosmetics, pharma in GCC`],
+      2: ['Incorporate UAE Free Zone entity (DIFC, JAFZA, or DMCC) — 100% foreign ownership', `Register Import/Export code and obtain ${t('ESMA', 'Emirates Authority for Standardisation and Metrology')} approvals`],
+      3: ['Obtain Halal certification from an accredited UAE body — ESMA or JAKIM accepted', 'Comply with UAE ESMA standards and Saudi SASO certification for KSA entry'],
+      4: ['Evaluate Noon.com vs Amazon.ae vs own Arabic-language D2C store', `Identify UAE ${t('B2B', 'Business-to-Business')} distributors — Dubai-based trading houses reach GCC & Levant`],
+      5: [`Setup AED multi-currency account — leverage India-UAE ${t('CEPA', 'Comprehensive Economic Partnership Agreement')} duty benefits`, 'FX hedging: AED is pegged to USD so USD/INR hedge covers AED exposure effectively'],
+      6: [`Arabic ${t('RTL', 'Right-to-Left')} headless storefront — Arabic UX increases conversion 40%+ in MENA`, 'AED pricing; Ramadan and Eid seasonal creatives are essential'],
+      7: ['Integrate Telr, PayTabs, Network International for UAE', 'Integrate Tabby and Tamara (BNPL) — Saudi Arabia leads MENA BNPL adoption'],
+      8: ['Arabic social media: Instagram Reels and Snapchat dominate UAE — TikTok is huge in KSA', 'Influencer marketing is 3x more effective in MENA than paid search for D2C brands'],
+      9: ['DHL Express Dubai hub — next-day delivery across UAE', `${t('DDP', 'Delivered Duty Paid')} clears UAE customs — buyers pay exact checkout price`],
+      10: ['Stage inventory at Dubai South or JAFZA free zone logistics hub', 'Same-day delivery in Dubai and Abu Dhabi via DHL On-Demand']
+    }
+  },
+  'apac': {
+    label: 'APAC / SEA',
+    flag: '🇸🇬',
+    marketSize: '$300B Southeast Asia e-commerce market by 2025',
+    keyInsight: 'Southeast Asia is mobile-first and social-commerce-first — TikTok Shop, Shopee Live, and Lazada dominate discovery.',
+    topChallenge: '6 countries, 6 currencies, 6 regulatory regimes. Most brands try to cover all — best results come from Singapore + 1.',
+    context: {
+      1: ['Start with Singapore as regional HQ — English-speaking, low tariffs, CECA with India', `Validate demand in Indonesia (270M people) and Vietnam (fast-growing middle class)`],
+      2: ['Incorporate Singapore Pte. Ltd. — 17% corporate tax, 0% capital gains', `Register for Singapore ${t('GST', 'Goods and Services Tax')} at S$1M revenue threshold`],
+      3: [`Australia: ${t('TGA', 'Therapeutic Goods Administration')} for health products; ${t('ACMA', 'Australian Communications and Media Authority')} for electronics`, 'Japan PSE certification mandatory for electronics — 6-12 week lead time'],
+      4: ['Evaluate Shopee + Lazada dual marketplace strategy — both required for SEA coverage', 'Australia: own Shopify storefront + Amazon.com.au are the right combo'],
+      5: ['Setup SGD and AUD multi-currency accounts', `${t('FEMA ODI', 'Foreign Exchange Management Act — Overseas Direct Investment rules for Indian companies establishing foreign subsidiaries')} compliance for Singapore entity setup`],
+      6: ['Multi-language storefront: EN, Bahasa Indonesia, Thai minimum for ASEAN', 'Mobile-first UX mandatory — 78% of SEA e-commerce traffic is mobile'],
+      7: ['Integrate GoPay, OVO (Indonesia); GrabPay (SG/MY/TH); VNPay (Vietnam)', 'Australia: integrate Afterpay (BNPL) — used by 3.4M Australians'],
+      8: ['TikTok Shop SEA is non-negotiable for D2C — 70%+ of Gen Z product discovery', 'Australia LinkedIn B2B + Google Shopping for established category players'],
+      9: ['DHL Express Singapore hub — next-day delivery to Malaysia, Indonesia, Thailand', `Australia ${t('DDP', 'Delivered Duty Paid')} service — AU customs threshold is AU$1,000`],
+      10: [`Singapore ${t('3PL', 'Third-Party Logistics')} hub covers ASEAN with 2-3 day delivery`, 'Australia: FBA or DHL warehousing in Sydney/Melbourne for Prime delivery eligibility']
+    }
+  }
+};
+
+const JOURNEY_STEPS = [
+  { id: 1, icon: '🔬', label: 'Audit', name: '360° Readiness Audit', desc: 'Validating baseline viability across product-market fit, unit economics, and risk.', outcome: 'Validated unit economics and zero blind spots before committing capital.', dhl: ['10-pillar diagnostic framework', 'AI readiness scoring', `Personalised Plan (${t('PIGEP', 'Personalised India-to-Global Expansion Plan')})`], deliverables: ['India readiness score', 'Risk priority matrix'], partners: ['Strategy Consulting', 'Market Entry & GTM'], partnerTypes: ['consultant', 'consultant'] },
+  { id: 2, icon: '⚖️', label: 'Legal', name: 'Legal & Regulatory Setup', desc: `Corporate structures, foreign tax nexuses (${t('VAT/GST', 'Value Added Tax / Goods & Services Tax')}), and export codes (${t('IEC/AD', 'Import Export Code / Authorized Dealer')}).`, outcome: 'Legally bulletproof foundation — shielded from fines, frozen payments, and customs holds.', dhl: ['Entity structure recommendation', `${t('FEMA/ODI', 'Foreign Exchange Management Act / Overseas Direct Investment')} coordination`, `Cross-border tax setup (${t('DTAA', 'Double Taxation Avoidance Agreement')})`], deliverables: ['Foreign entity incorporated', 'IEC code active'], partners: ['Legal & IP Advisory', 'Financial & Tax Services'], partnerTypes: ['consultant', 'finance'] },
+  { id: 3, icon: '🏭', label: 'Supply', name: 'Supply Chain Hardening', desc: `Production stress-testing, dedicated export lines, and international certifications (${t('CE', 'Conformité Européenne')}, ${t('FDA', 'Food & Drug Admin.')}, BIS, Halal).`, outcome: 'Infrastructure scaled to global volumes without quality failures or customs rejections.', dhl: ['Certification roadmap by market', 'Export packaging compliance audit', 'Supply chain risk mapping'], deliverables: ['Target certifications obtained', 'Export production line active'], partners: ['QA & Certifications', 'Contract Mfg. (OEM)'], partnerTypes: ['supply', 'supply'] },
+  { id: 4, icon: '📡', label: 'Channels', name: 'Channel Strategy', desc: `Data-driven evaluation: Global Marketplaces vs Owned Storefront (${t('D2C', 'Direct-to-Consumer')}) vs Hybrid model by region.`, outcome: 'Focused global sales channel that converts traffic to revenue from day one.', dhl: ['Marketplace setup & optimization', 'Storefront channel strategy', `B2B distributor matching`], deliverables: ['Channel decision document', 'First international listings live'], partners: ['Market Entry & GTM', 'Global Marketplace'], partnerTypes: ['consultant', 'marketing'] },
+  { id: 5, icon: '💰', label: 'Banking', name: 'Cross-Border Banking', desc: `Multi-currency treasury setup, FX hedging, and ${t('FEMA', 'Foreign Exchange Management Act')} compliance frameworks.`, outcome: 'International revenue reaches your Indian account predictably — with zero regulatory blocks.', dhl: ['Multi-currency account setup', 'FX hedging strategy', 'RBI & FEMA compliance'], deliverables: ['Treasury accounts live', 'FX policy documented'], partners: ['Global Payment & Treasury', 'Financial & Tax Services'], partnerTypes: ['finance', 'finance'] },
+  { id: 6, icon: '💻', label: 'Digital', name: 'Digital Infrastructure', desc: 'Localised storefronts via headless web architectures, translated catalogs, and regional CDN deployment.', outcome: 'Blazing-fast storefront converting visitors in their language — under 50ms load times.', dhl: ['Headless architecture design', 'Localisation & translation strategy', `${t('CDN', 'Content Delivery Network')} configuration per region`], deliverables: ['Headless storefront live', '90+ Core Web Vitals score'], partners: ['Web Development', 'Cloud & Infrastructure'], partnerTypes: ['tech', 'tech'] },
+  { id: 7, icon: '💳', label: 'Payments', name: 'Cross-Border Payments', desc: `Localised checkout with alternative payment methods (${t('APMs', 'Alternative Payment Methods')}) and automated destination tax calculation.`, outcome: 'Zero-friction checkout with 40%+ higher conversion vs a standard payment gateway.', dhl: ['Local payment method integration', 'Multi-currency checkout', 'Destination tax automation'], deliverables: ['Local APMs integrated', 'Tax automated at checkout'], partners: ['Merchant of Record (MoR)', 'Global Payment & Treasury'], partnerTypes: ['finance', 'tech'] },
+  { id: 8, icon: '📣', label: 'Marketing', name: 'GTM Strategy', desc: 'International demand engine via programmatic bidding, international SEO, and regional influencer networks.', outcome: 'Sustainable international customer acquisition at predictable cost-per-acquisition.', dhl: ['International SEO with hreflang', 'Programmatic ad campaigns per region', 'Brand repositioning for export markets'], deliverables: ['Ad campaigns live', `${t('ROAS', 'Return on Ad Spend')} dashboard active`], partners: ['Digital Marketing', 'International PR & Comms'], partnerTypes: ['marketing', 'marketing'] },
+  { id: 9, icon: '✈️', label: 'DHL', name: 'DHL Express Logistics', desc: `Outbound shipping with ${t('DIM weight', 'Dimensional Weight — volume-based pricing that charges by package size, not just weight')} packaging optimisation and DDP handling.`, outcome: 'Orders arrive on time, every time — with zero customs surprises for buyers.', dhl: ['Express transit routing by lane', `${t('DDP', 'Delivered Duty Paid')} integrated at checkout`, 'Volumetric packaging optimisation'], deliverables: ['DDP checkout live', 'Packaging redesigned for export'], partners: ['Global 3PL & Warehousing', 'Order Management (OMS)'], partnerTypes: ['dhl', 'consultant'] },
+  { id: 10, icon: '🏪', label: 'Storage', name: 'Destination Warehousing', desc: `Lowering delivery times via international ${t('3PL', 'Third-Party Logistics')} destination hubs or DHL Supply Chain On-Demand warehousing.`, outcome: '1–3 day local delivery that competes with Amazon Prime in every target market.', dhl: ['3PL hub selection by market', `${t('FBA', 'Fulfillment by Amazon')} setup & optimization`, 'DHL Supply Chain integration'], deliverables: ['Hub inventory live', 'Replenishment automated'], partners: ['Global 3PL & Warehousing', 'Global Support & BPO'], partnerTypes: ['logistics', 'tech'] }
+];
+
+const OUTCOMES = [
+  { id: 'market-entry', icon: '🚀', color: '#D40511', bgColor: 'rgba(212,5,17,0.06)', seq: '01', title: 'Faster Market Entry', tagline: 'Go from decision to first international sale in a fraction of the time it takes to navigate solo.', enablers: ['Pre-vetted partner ecosystem eliminates months of vendor searching', `Algorithmic ${t('PIGEP', 'Personalised India-to-Global Expansion Plan')} creation removes planning guesswork`, 'Parallel workstreams run legal, logistics, and digital simultaneously — not sequentially'], whyItMattersText: 'Companies that achieve rapid scale in new international markets capture 2.5x higher revenue growth compared to slower-moving peers, according to McKinsey.', whyItMattersLink: 'https://www.mckinsey.com/capabilities/strategy-and-corporate-finance/our-insights/beating-the-odds-in-market-entry', ecosystemPartners: ['Strategy Consulting', 'Market Entry & GTM', 'Legal & IP Advisory'] },
+  { id: 'compliance', icon: '🛡️', color: '#059669', bgColor: 'rgba(5,150,105,0.06)', seq: '02', title: 'Regulatory Confidence', tagline: `Maps ${t('FEMA', 'Foreign Exchange Management Act')}, ${t('GDPR', 'General Data Protection Regulation')}, ${t('VAT', 'Value Added Tax')}, Halal, CE — every compliance requirement handled before it becomes a crisis.`, enablers: ['Pre-vetted compliance partners with zero-penalty SLA guarantees', 'Automated FEMA compliance calendar and deadline tracking', 'Region-specific regulatory playbooks built into your PIGEP'], whyItMattersText: 'Proactive regulatory compliance serves as a competitive advantage that accelerates international expansion, per Forbes Business Council insights.', whyItMattersLink: 'https://www.forbes.com/councils/forbesbusinesscouncil/2025/11/26/five-ways-compliance-can-actually-be-a-competitive-advantage/', ecosystemPartners: ['Legal & IP Advisory', 'Financial & Tax Services', 'Merchant of Record (MoR)'] },
+  { id: 'partnerships', icon: '🤝', color: '#0284C7', bgColor: 'rgba(2,132,199,0.06)', seq: '03', title: 'Stronger Local Partnerships', tagline: 'Enter every market with a network of pre-vetted local partners, distributors, and market connectors — not cold outreach.', enablers: ['Algorithmic partner matching maps your capability gaps to specific domain experts', 'Tier A/B partner system ensures right partner at the right stage', 'In-country BD partners with proven India-origin brand track record'], whyItMattersText: 'Deeply integrated local partnerships act as an untapped channel driving brand trust and market penetration speed in new regions, according to Forbes.', whyItMattersLink: 'https://www.forbes.com/councils/forbesbusinesscouncil/2026/05/08/the-untapped-channel-driving-the-next-frontier-of-brand-trust/', ecosystemPartners: ['Market Entry & GTM', 'Strategy Consulting', 'International PR & Comms'] },
+  { id: 'acquisition', icon: '📈', color: '#D97706', bgColor: 'rgba(217,119,6,0.06)', seq: '04', title: 'Faster Customer Acquisition', tagline: 'Launch into international markets with demand generation already activated — not starting from zero.', enablers: ['International SEO and programmatic ad strategy pre-built per region', 'Marketplace optimisation by certified Amazon/Noon/Shopee partners', 'Influencer and affiliate network activated before your first shipment lands'], whyItMattersText: 'Implementing highly effective, localized customer acquisition strategies is crucial to boosting cross-border conversion rates, per Forbes Agency Council.', whyItMattersLink: 'https://www.forbes.com/councils/forbesagencycouncil/2019/01/04/three-highly-effective-strategies-of-customer-acquisition-marketing/', ecosystemPartners: ['Digital Marketing', 'Global Marketplace', 'International PR & Comms'] },
+  { id: 'operations', icon: '⚙️', color: '#9333EA', bgColor: 'rgba(147,51,234,0.06)', seq: '05', title: 'Scalable Operations', tagline: 'Build operational infrastructure that handles 10x volume without proportional cost increases.', enablers: [`${t('OMS', 'Order Management System')} integration handles multi-channel inventory in real time`, 'Headless architecture scales without performance degradation', 'Contract manufacturing network provides surge capacity on demand'], whyItMattersText: 'Building a cloud-ready, scalable enterprise network reduces long-term operational costs during global expansion, per McKinsey research.', whyItMattersLink: 'https://www.mckinsey.com/capabilities/tech-and-ai/our-insights/tech-forward/building-the-cloud-ready-enterprise-network', ecosystemPartners: ['Order Management (OMS)', 'Cloud & Infrastructure', 'Web Development'] },
+  { id: 'logistics', icon: '✈️', color: '#D40511', bgColor: 'rgba(212,5,17,0.06)', seq: '06', title: 'Cross-Border Logistics Readiness', tagline: 'Ship to 220+ countries with guaranteed delivery times, pre-paid duties, and zero customs surprises.', enablers: [`DHL Express ${t('DDP', 'Delivered Duty Paid')} means buyers pay exactly what they see at checkout — zero surprises`, 'Destination warehousing cuts delivery from 10 days to 1–3 days', 'Volumetric packaging optimisation reduces per-unit shipping cost by 15-25%'], whyItMattersText: 'Future-proofing cross-border supply chain and logistics operations is essential to preventing cart abandonment due to surprise costs, per McKinsey insights.', whyItMattersLink: 'https://www.mckinsey.com/capabilities/operations/our-insights/future-proofing-the-supply-chain', ecosystemPartners: ['Global 3PL & Warehousing', 'Order Management (OMS)', 'QA & Certifications'] },
+  { id: 'validation', icon: '✅', color: '#059669', bgColor: 'rgba(5,150,105,0.06)', seq: '07', title: 'Market Validation Before Overcommitting', tagline: 'Test demand, validate unit economics, and prove your model in each market before major capital deployment.', enablers: ['Phase gate structure prevents moving forward without proven traction', 'Small pilot test framework built into the PIGEP from day one', 'Real-time dashboard tracks international KPIs vs cohort baseline targets'], whyItMattersText: 'Validating market demand before committing to international expansion is critical to preventing scaling failures, according to Aexus market entry research.', whyItMattersLink: 'https://aexus.com/how-do-you-validate-market-demand-before-international-expansion/', ecosystemPartners: ['Strategy Consulting', 'Market Entry & GTM', 'Global Support & BPO'] },
+  { id: 'banking', icon: '💹', color: '#0284C7', bgColor: 'rgba(2,132,199,0.06)', seq: '08', title: 'Revenue That Reaches You', tagline: `Multi-currency treasury, FX hedging, and FEMA compliance — your international revenue arrives in your account, intact.`, enablers: ['Multi-currency accounts eliminate costly bank conversion fees', `FX forward contracts lock in exchange rates in advance — protecting margins`, `FEMA/${t('RBI', 'Reserve Bank of India')} compliance means zero regulatory blocks on repatriation`], whyItMattersText: 'Proper cross-border payment infrastructure eliminates the hidden banking fees that silently erode global profit margins, per Shopify Enterprise.', whyItMattersLink: 'https://www.shopify.com/enterprise/blog/cross-border-ecommerce', ecosystemPartners: ['Global Payment & Treasury', 'Financial & Tax Services', 'Merchant of Record (MoR)'] }
+];
+
+const PROCESS_STEPS = [
+  { num: '1', phase: 'Discovery', name: 'Diagnostic Audit & Scoring', desc: 'Complete the 10-pillar diagnostic scorecard. Our weighted algorithm scores you across Foundation, Digital, and Scale dimensions — identifying your highest-priority gaps.', metrics: ['Composite readiness score delivered', 'NDA signed', 'PIGEP brief created'] },
+  { num: '2', phase: 'Planning', name: 'Personalised Expansion Plan', desc: `Generate your ${t('PIGEP', 'Personalised India-to-Global Expansion Plan')} — a 12–18 month phased roadmap built on cohort benchmarks from 320+ Indian exporters who've expanded before you.`, metrics: ['PIGEP signed off', 'Phase gates agreed', 'Budget model built'] },
+  { num: '3', phase: 'Matching', name: 'Ecosystem Partner Allocation', desc: 'Tier A partners are immediately allocated to address your critical gaps. Each partner is briefed on your PIGEP before your first meeting — zero time wasted on introductions.', metrics: ['Tier A partners matched', 'Kickoff sessions booked', 'First sprints scoped'] },
+  { num: '4', phase: 'Execution', name: '30/60/90-Day Growth Sprints', desc: 'Execute Physical (supply chain, logistics) or Digital (payments, storefront, marketing) sprints based on your primary scored gap — with monthly DHL check-ins and KPI tracking.', metrics: ['First international order shipped', 'Revenue dashboard live', 'Phase 2 gates reviewed'] }
+];
+
+/* ═══════════════════════ NEW 5-DIMENSION MATRIX & TRACKS ═══════════════════════ */
+
+const DIMENSIONS = [
+  { id: 'F', name: 'Foundation', color: '#6366F1' },
+  { id: 'FI', name: 'Finance', color: '#10B981' },
+  { id: 'D', name: 'Digital', color: '#0284C7' },
+  { id: 'S', name: 'Scale', color: '#9333EA' },
+  { id: 'M', name: 'Marketing', color: '#DB2777' }
+];
+
+const TRACKS = {
+  Foundation: {
+    name: 'Foundations & Compliance Track',
+    why: `Your product may be ready, but scaling internationally without validated unit economics and a bulletproof legal infrastructure creates exponential risk. Getting this wrong late can result in frozen operations and regulatory fines.`,
+    outcome: 'A legally compliant foundation, an export-ready supply chain, and validated market fit before heavily deploying capital into marketing or warehousing.',
+    badges: ['Strategy Consulting', 'Legal & IP Advisory', 'QA & Certifications']
+  },
+  Finance: {
+    name: 'Capital & FX Optimization Track',
+    why: `Profit leakage through poor FX management and inefficient cross-border payment structures is eroding margins on every international transaction.`,
+    outcome: 'Automated multi-currency treasury that protects profit margins, minimizes conversion fees, and ensures FEMA compliance.',
+    badges: ['Global Payment & Treasury', 'Financial & Tax Services']
+  },
+  Digital: {
+    name: 'Digital Velocity Track',
+    why: `Your core product and foundations are viable globally, but slow digital infrastructure and poor localization are causing high checkout abandonment rates.`,
+    outcome: 'A high-converting, hyper-localized digital presence capable of handling multi-region traffic under 50ms.',
+    badges: ['Web Development', 'Merchant of Record (MoR)']
+  },
+  Scale: {
+    name: 'Global Scale & Logistics Track',
+    why: 'You have solid foundations and an active digital infrastructure. Now you need to aggressively optimize physical delivery to compete with local incumbents on speed.',
+    outcome: `Amazon Prime-level delivery speeds through DDP shipping and destination warehousing.`,
+    badges: ['Global 3PL & Warehousing', 'Order Management (OMS)']
+  },
+  Marketing: {
+    name: 'International GTM Track',
+    why: 'Your infrastructure is ready, but your customer acquisition and channel strategy are lagging, preventing you from capturing market share.',
+    outcome: 'Predictable international customer acquisition at a profitable ROAS across distinct regional channels.',
+    badges: ['Digital Marketing', 'Market Entry & GTM']
+  },
+  Digital_Foundation: {
+    name: 'Core Operations & Digital Overhaul Track',
+    why: 'Both your foundational compliance and digital storefront need significant work. Attempting to scale marketing or logistics now will result in massive cart abandonment and compliance roadblocks.',
+    outcome: 'Simultaneous deployment of legal/financial frameworks and localized digital infrastructure to create a secure, high-converting baseline.',
+    badges: ['Legal & IP Advisory', 'Web Development', 'Global Payment & Treasury']
+  },
+  Foundation_Scale: {
+    name: 'Compliance & Physical Supply Track',
+    why: 'Your digital presence is holding up, but weak supply chain foundations and logistics bottlenecks threaten your ability to fulfill demand profitably and legally.',
+    outcome: 'Export-certified production lines coupled with DDP-enabled destination warehousing to ensure legally sound, rapid fulfillment.',
+    badges: ['QA & Certifications', 'Global 3PL & Warehousing', 'Legal & IP Advisory']
+  },
+  Digital_Scale: {
+    name: 'Digital Velocity & Global Fulfilment Track',
+    why: 'Your foundational setup is sound, but your UI/UX and delivery speeds lag behind global competitors. You need a synchronized push on localized digital and rapid logistics.',
+    outcome: 'A hyper-localized headless digital experience paired with 3PL destination hubs to capture and fulfill international market share rapidly.',
+    badges: ['Web Development', 'Global 3PL & Warehousing', 'Merchant of Record (MoR)']
+  },
+  Foundation_Marketing: {
+    name: 'Regulatory & Market Entry Track',
+    why: 'You aren\'t legally ready to export, and no foreign buyers know you exist. This track builds the legal and physical export compliance baseline while simultaneously defining your channel strategy and launching localized demand generation.',
+    outcome: 'A fully compliant export entity paired with a validated, active international customer acquisition engine.',
+    badges: ['Legal & IP Advisory', 'Market Entry & GTM', 'Digital Marketing']
+  },
+  Finance_Scale: {
+    name: 'Treasury & Global Fulfillment Track',
+    why: 'You can\'t move money efficiently, and you can\'t move products quickly. This track focuses on structuring multi-currency accounts and FX hedging, while concurrently deploying DDP (Delivered Duty Paid) shipping and international 3PL destination warehousing.',
+    outcome: 'High-margin, automated cross-border transactions paired with 1-3 day local delivery speeds.',
+    badges: ['Global Payment & Treasury', 'Global 3PL & Warehousing']
+  },
+  all_low: {
+    name: 'Ground-Up Expansion Track',
+    why: 'Your business is currently optimized solely for the domestic market. International expansion requires a full parallel infrastructure build-out across legal, digital, and logistics dimensions.',
+    outcome: 'A comprehensive, phased 18-month build establishing a complete, compliant, and scalable international subsidiary.',
+    badges: ['Strategy Consulting', 'Legal & IP Advisory', 'Web Development']
+  },
+  all_high: {
+    name: 'Advanced Enterprise Optimization Track',
+    why: 'You already possess strong cross-border capabilities. Your next phase is extracting marginal gains, automating treasury, and utilizing predictive supply chain AI to outmaneuver local incumbents.',
+    outcome: 'Reduced shipping dimensional weight costs, API-driven automated multi-currency treasury, and hyper-localized programmatic ROAS.',
+    badges: ['Strategy Consulting', 'Global Payment & Treasury', 'Digital Marketing']
+  }
+};
+
+const PILLARS = [
+  { id: 'readiness', name: '360° Readiness Audit', globalWeight: 1.5, dims: { F: 1.0 }, question: 'How well have you validated that your product can succeed internationally?', context: 'This covers whether you\'ve researched actual demand, understood what your product will cost to land in a foreign market, and done any real validation beyond assumption.', options: [{score:1, label:'Early Stage', text:'We haven\'t done international research yet.'},{score:2, label:'Desk Research', text:'General idea of target markets, no real landed costs.'},{score:3, label:'Basic Validation', text:'Target markets identified with initial margin estimates.'},{score:4, label:'Pilot Tested', text:'Small-scale pilot sales in at least one international market.'},{score:5, label:'Continuously Tracking', text:'Monitor global demand and unit economics in real time.'}], milestone: 'Validate Target Markets', outcome: 'Clear margin projections and entry sequence.', partners: [{name:'Strategy Consulting', type:'consultant'}] },
+  { id: 'legal', name: 'Legal & Compliance', globalWeight: 1.5, dims: { F: 1.0 }, question: 'Are your business structures and export licences ready for international trade?', context: `Operating internationally requires specific registrations — IEC codes, foreign tax numbers, and sometimes new corporate entities.`, options: [{score:1, label:'India-Only Setup', text:'Set up only for India.'},{score:2, label:'Basic IEC', text:'Basic IEC export code but foreign tax is manual.'},{score:3, label:'Active Codes', text:'IEC/AD codes active. Alert-based cross-border tax thresholds.'},{score:4, label:'Automated Compliance', text:`Software handles international VAT/GST and GDPR automatically.`},{score:5, label:'Merchant of Record', text:`Use a global MoR to completely offload compliance liability.`}], milestone: 'Establish Compliance', outcome: 'Active export codes, VAT/GST registered.', partners: [{name:'Legal & IP Advisory', type:'consultant'}] },
+  { id: 'supply', name: 'Supply Chain', globalWeight: 1.0, dims: { F: 0.5, S: 1.0 }, question: 'Can your production scale for export, and do you have international quality certifications?', context: `Selling internationally often requires certifications like CE marks or FDA clearance.`, options: [{score:1, label:'Domestic Only', text:'Produce on demand to Indian standards only.'},{score:2, label:'Ad Hoc', text:'Manually extend production for export orders.'},{score:3, label:'Certified', text:'Dedicated export lines with target market certifications.'},{score:4, label:'Contract Network', text:'Network of contract manufacturers to scale.'},{score:5, label:'Algorithmic Sourcing', text:'Sourcing adjusts automatically based on live global demand.'}], milestone: 'Secure Certifications', outcome: 'Export-ready production capacity.', partners: [{name:'QA & Certifications', type:'supply'}] },
+  { id: 'channel', name: 'Channel Strategy', globalWeight: 1.0, dims: { S: 1.0, M: 1.0 }, question: 'Do you have a clear, data-backed strategy for how you\'ll reach international customers?', context: 'A deliberate, region-specific channel strategy (Marketplaces vs D2C vs B2B) is critical to profitable growth.', options: [{score:1, label:'No Strategy', text:'Hoping international buyers find us organically.'},{score:2, label:'Copy-Paste', text:'Applying our India sales approach abroad.'},{score:3, label:'Focused Channel', text:'Focused approach — either global marketplaces or B2B distributors.'},{score:4, label:'Multi-Channel', text:`Optimised marketplace listings + own D2C storefront.`},{score:5, label:'Omnichannel', text:'Dynamically routes customers between D2C, B2B, and marketplaces.'}], milestone: 'Define Channels', outcome: 'Data-backed channel strategy.', partners: [{name:'Market Entry & GTM', type:'consultant'}] },
+  { id: 'banking', name: 'Banking & FX', globalWeight: 1.5, dims: { FI: 1.0 }, question: 'How do you receive international payments and manage foreign exchange risks?', context: `Receiving foreign currencies without the right infrastructure means losing 2-4% on every transaction.`, options: [{score:1, label:'INR Only', text:'Only accept Indian Rupees.'},{score:2, label:'Spot Rates', text:'Accept foreign currencies but convert at spot rates.'},{score:3, label:'Multi-Currency Accounts', text:'Use virtual multi-currency accounts.'},{score:4, label:'Active FX Management', text:`Actively manage currency treasury and hedge FX volatility.`},{score:5, label:'API-Driven Treasury', text:'Treasury routes global revenue to pay foreign suppliers in native currencies.'}], milestone: 'Setup Multi-Currency Treasury', outcome: 'FX hedging and automated FEMA compliance.', partners: [{name:'Global Payment & Treasury', type:'finance'}] },
+  { id: 'digital', name: 'Digital Infra', globalWeight: 1.5, dims: { D: 1.0 }, question: 'Is your digital presence designed to serve international visitors effectively?', context: 'International customers abandon sites that load slowly or don\'t feel local.', options: [{score:1, label:'India-Only Site', text:'Single website optimised for India.'},{score:2, label:'Auto-Translate', text:'Use browser translation plugins.'},{score:3, label:'Translated Sections', text:'Manually translated website sections.'},{score:4, label:'Headless Commerce', text:'Headless web architecture adapts catalog per region.'},{score:5, label:'Dynamic Global UX', text:`Dynamically adapts UI, content, pricing per visitor's region.`}], milestone: 'Localise Infrastructure', outcome: 'Fast, region-specific headless digital storefronts.', partners: [{name:'Web Development', type:'tech'}] },
+  { id: 'payments', name: 'Cross-Border Pay', globalWeight: 1.0, dims: { FI: 1.0, D: 0.5 }, question: 'Can international customers pay using their local currency and preferred payment methods?', context: 'Checkout abandonment spikes when customers can\'t pay their preferred way (e.g. iDEAL, Pix, Klarna).', options: [{score:1, label:'INR Checkout', text:'Only accept INR through domestic gateways.'},{score:2, label:'FX Display Only', text:'Show prices in foreign currencies, charge in INR.'},{score:3, label:'Major Currencies', text:'Pay and settle in major currencies (USD, EUR).'},{score:4, label:'APMs Integrated', text:`Accept international cards and key local APMs.`},{score:5, label:'Hyper-Local Checkout', text:'Integrates local digital wallets via local acquiring banks.'}], milestone: 'Integrate Local Checkout', outcome: 'Frictionless checkout with APMs.', partners: [{name:'Merchant of Record (MoR)', type:'tech'}] },
+  { id: 'marketing', name: 'Digital Marketing', globalWeight: 1.5, dims: { M: 1.0, D: 0.5 }, question: 'How do you generate international traffic and optimize your global ad spend?', context: 'Running Indian ad campaigns at foreign audiences is an expensive mistake.', options: [{score:1, label:'No International Ads', text:'All marketing is directed at the Indian market.'},{score:2, label:'Manual Uploads', text:'Run basic domestic-style ads abroad.'},{score:3, label:'Automated Syncs', text:'Automated daily catalogue syncs on international networks.'},{score:4, label:'Programmatic', text:`Multi-channel programmatic bidding optimised for local ROAS.`},{score:5, label:'ML Attribution', text:`ML models automatically shift ad budgets across global channels.`}], milestone: 'Activate Global Demand', outcome: 'Localised ad campaigns with ROI targets.', partners: [{name:'Digital Marketing', type:'marketing'}] },
+  { id: 'logistics', name: 'Outbound Logistics', globalWeight: 1.5, dims: { S: 1.0 }, question: 'How efficient is your international shipping, packaging, and customs clearance?', context: 'Surprise customs bills and oversized packaging destroy cross-border profitability.', options: [{score:1, label:'Ad Hoc Shipping', text:'Book couriers manually, buyers manage duties.'},{score:2, label:'Basic Estimation', text:'Estimate shipping rates, buyers manage duties.'},{score:3, label:'Optimised for Export', text:'Export durability packaging, hired customs brokers.'},{score:4, label:'DDP with DIM Weight', text:`DIM weight tier optimization and DDP shipping.`},{score:5, label:'Cartonization Software', text:'Algorithmic cartonization software cuts shipping costs 15-25%.'}], milestone: 'Optimize Logistics', outcome: 'DDP shipping active, DIM optimized.', partners: [{name:'Global 3PL & Warehousing', type:'dhl'}] },
+  { id: 'warehouse', name: 'Warehousing', globalWeight: 1.0, dims: { S: 1.0 }, question: 'Do you hold inventory in your target markets to enable fast local delivery?', context: 'Shipping from India for every order means consistently losing to local competitors on speed.', options: [{score:1, label:'India-Only Fulfilment', text:'Ship 100% of orders from India.'},{score:2, label:'Overseas Distributors', text:'Bulk-ship to distributors, slow end-dispatch.'},{score:3, label:'Fulfilment Hubs', text:`Use overseas hubs (e.g. FBA) to store inventory.`},{score:4, label:'3PL Network', text:`Connected network of international 3PL warehouses.`},{score:5, label:'Predictive Staging', text:'AI stages inventory in regional hubs before orders are placed.'}], milestone: 'Position Inventory', outcome: '1-3 day local delivery speeds.', partners: [{name:'Global 3PL & Warehousing', type:'dhl'}] }
+];
+
+const ECOSYSTEM_PARTNERS_REGISTRY = {
+  "Strategy Consulting": [
+    { name: "EY", desc: "High-level strategic guidance for entering new geographic or digital markets.<br>Offers regulatory compliance, tax structuring, and commercial market-entry strategies." },
+    { name: "Stelcore", desc: "Facilitates corporate governance alongside strategic market growth.<br>Assists with cross-border compliance, entity setup, and trade advisory services." }
+  ],
+  "Market Entry & GTM": [
+    { name: "EY", desc:"High-level strategic guidance for entering new geographic or digital markets.<br>Offers regulatory compliance, tax structuring, and commercial market-entry strategies."},
+    { name: "Stelcore", desc: "Facilitates corporate governance alongside strategic market growth.<br>Assists with cross-border compliance, entity setup, and trade advisory services." },
+    { name: "Adyogi", desc: "Performance marketing automation specifically tailored for e-commerce brands.<br>Optimizes ad spend across social channels using automated creative and targeting tools." }
+  ],
+  "Legal & IP Advisory": [
+    { name: "Lucria Consult", desc: "Handles trademark filings, patent protections, and local corporate legalities." },
+    { name: "Stelcore", desc: "Facilitates corporate governance alongside strategic market growth.<br>Assists with cross-border compliance, entity setup, and trade advisory services." }
+  ],
+  "Financial & Tax Services": [
+    { name: "ICICI Bank", desc: "Essential for localized corporate banking, working capital, and domestic trade credit.<br>Provides business accounts, domestic payment clearing, and trade financing." },
+    { name: "Axis Bank", desc: "Critical for Indian domestic banking operations and localized payment processing.<br>Manages merchant accounts, local payouts, and corporate banking solutions." }
+  ],
+  "QA & Certifications": [
+    { name: "Lucria Consult", desc: "Protects brand assets and ensures regional regulatory compliance." },
+    { name: "Stelcore", desc: "Facilitates corporate governance alongside strategic market growth.<br>Assists with cross-border compliance, entity setup, and trade advisory services." }
+  ],
+  "Contract Mfg. (OEM)": [
+    { name: "Alibaba", desc: "Fundamental channel for global B2B sourcing, bulk purchasing, and wholesale trade.<br>Connects international buyers directly with manufacturers and large-scale suppliers." }
+  ],
+  "Global Marketplace": [
+    { name: "Amazon", desc: "High-volume external distribution channel with massive built-in global traffic.<br>Acts as a third-party (3P) marketplace platform with integrated logistics (FBA)." },
+    { name: "eBay", desc: "Provides an auction-based and fixed-price global listing platform for independent sellers." },
+    { name: "Walmart", desc: "Offers an invite-only online marketplace platform for curated third-party brands." },
+    { name: "Alibaba", desc: "Fundamental channel for global B2B sourcing, bulk purchasing, and wholesale trade.<br>Connects international buyers directly with manufacturers and large-scale suppliers." },
+    { name: "Joom", desc: "Operates a mobile-first global shopping marketplace with localized translation features." },
+    { name: "Etsy", desc: "Connects creative independent sellers with a dedicated global audience." }
+  ],
+  "Global Payment & Treasury": [
+    { name: "Payoneer", desc: "Provides virtual international receiving bank accounts and low-cost cross-border transfers." },
+    { name: "Pingpong", desc: "Manages international supplier payouts, VAT payments, and foreign exchange conversion." },
+    { name: "PayU", desc: "Localized high-conversion payment gateway for core digital commerce markets.<br>Processes credit/debit cards, net banking, and local digital wallets at the checkout." },
+    { name: "Razorpay", desc: "Aggregates diverse payment modes, handles instant refunds, and automates vendor payouts." },
+    { name: "PayPal", desc: "Acts as an international digital wallet and cross-border checkout gateway." }
+  ],
+  "Web Development": [
+    { name: "Shopify", desc: "Provides hosted e-commerce templates, checkout hosting, and an app ecosystem." },
+    { name: "Magento", desc: "Delivers a self-hosted, flexible database framework for complex product catalogs." },
+    { name: "Big Commerce", desc: "Features robust built-in SEO capabilities, API integrations, and multi-currency checkout." }
+  ],
+  "Cloud & Infrastructure": [
+    { name: "Zoho", desc: "Provides enterprise ERP solutions, including CRM, accounting, and HR tools." },
+    { name: "Shopify", desc: "Provides hosted e-commerce templates, checkout hosting, and an app ecosystem." }
+  ],
+  "Merchant of Record (MoR)": [
+    { name: "Razorpay", desc: "Premium checkout and neo-banking stack for seamless local transaction processing." },
+    { name: "PayPal", desc: "Acts as an international digital wallet and cross-border checkout gateway." }
+  ],
+  "Digital Marketing": [
+    { name: "Google", desc: "Primary driver for high-intent customer acquisition and brand visibility.<br>Enables search engine marketing (SEM), programmatic ads, and web analytics." },
+    { name: "Adyogi", desc: "Performance marketing automation specifically tailored for e-commerce brands.<br>Optimizes ad spend across social channels using automated creative and targeting tools." },
+    { name: "Digiaansh", desc: "Provides full-service digital marketing, content creation, and SEO management." },
+    { name: "Facebook / Meta", desc: "Drives targeted social media advertising (Instagram/Facebook) and retargeting campaigns." }
+  ],
+  "International PR & Comms": [
+    { name: "Digiaansh", desc: "Agencies that scale brand presence and manage localized digital campaigns." },
+    { name: "Facebook / Meta", desc: "Vital for top-of-funnel brand awareness and social-commerce acquisition." }
+  ],
+  "Global 3PL & Warehousing": [
+    { name: "Amazon", desc: "High-volume external distribution channel with massive built-in global traffic.<br>Acts as a third-party (3P) marketplace platform with integrated logistics (FBA)." }
+  ],
+  "Order Management (OMS)": [
+    { name: "Unicommerce", desc: "Automates inventory synchronization, warehouse management, and order fulfillment." },
+    { name: "Vinculum", desc: "Enables cross-border multi-channel retail scaling and global fulfillment mapping.<br>Offers real-time inventory management across international warehouses and marketplaces." },
+    { name: "Eunimart", desc: "Consolidates cataloging, pricing, and orders from multiple global marketplaces into one dashboard." }
+  ],
+  "Global Support & BPO": [
+    { name: "Zoho", desc: "Unified cloud software suite for managing core business operations and customer data." }
+  ],
+  "SaaS Platforms": [
+    { name: "Unicommerce", desc: "Automates inventory synchronization, warehouse management, and order fulfillment." },
+    { name: "Zoho", desc: "Provides enterprise ERP solutions, including CRM, accounting, and HR tools." },
+    { name: "Vinculum", desc: "Enables cross-border multi-channel retail scaling and global fulfillment mapping.<br>Offers real-time inventory management across international warehouses and marketplaces." },
+    { name: "Eunimart", desc: "Consolidates cataloging, pricing, and orders from multiple global marketplaces into one dashboard." }
+  ]
+};
+
+const CONNECT_NOW_URL = 'onboarding.html'; 
+
+function initPartnerModalUI() {
+  if (document.getElementById('partnerModalOverlay')) return;
+
+  const overlay = document.createElement('div');
+  overlay.id = 'partnerModalOverlay';
+  overlay.className = 'partner-modal-overlay';
+  overlay.innerHTML = `
+    <div class="partner-modal-container" role="dialog" aria-modal="true">
+      <div class="partner-modal-header">
+        <div class="partner-modal-header-text">
+          <h3 id="partnerModalTitle">Ecosystem Partners</h3>
+          <p id="partnerModalSubtitle">Global Growth Network</p>
+        </div>
+        <button class="partner-modal-close-btn" id="partnerModalClose" aria-label="Close modal">&times;</button>
+      </div>
+      <div class="partner-modal-body" id="partnerModalBody"></div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+
+  document.getElementById('partnerModalClose').addEventListener('click', closePartnerModal);
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) closePartnerModal();
+  });
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closePartnerModal();
+  });
+}
+
+function openPartnerModal(key) {
+  initPartnerModalUI();
+  const overlay = document.getElementById('partnerModalOverlay');
+  const titleEl = document.getElementById('partnerModalTitle');
+  const bodyEl = document.getElementById('partnerModalBody');
+
+  titleEl.textContent = key;
+  const partners = ECOSYSTEM_PARTNERS_REGISTRY[key] || [];
+  bodyEl.innerHTML = '';
+
+  if (partners.length > 0) {
+    const grid = document.createElement('div');
+    grid.className = 'partner-cards-grid';
+    
+    partners.forEach(p => {
+      const card = document.createElement('div');
+      card.className = 'partner-card';
+      card.innerHTML = `
+        <div class="partner-brand-header">
+          <span class="partner-logo-fallback">${p.name.substring(0, 2).toUpperCase()}</span>
+          <div class="partner-name">${p.name}</div>
+        </div>
+        <p class="partner-description">${p.desc}</p>
+        <a href="${CONNECT_NOW_URL}" class="partner-connect-btn">Connect Now &rarr;</a>
+      `;
+      grid.appendChild(card);
+    });
+    bodyEl.appendChild(grid);
+  } else {
+    bodyEl.innerHTML = `
+      <div class="partner-placeholder-state">
+        <div class="partner-placeholder-icon">✦</div>
+        <p class="partner-placeholder-text">
+          We're currently expanding our partner network in this area. Our team is actively onboarding specialized experts to better support your international growth journey.
+        </p>
+        <a href="${CONNECT_NOW_URL}" class="partner-connect-btn" style="margin-top:1.5rem">Inquire About Partners &rarr;</a>
+      </div>
+    `;
+  }
+
+  overlay.classList.add('active');
+  document.body.style.overflow = 'hidden'; 
+}
+
+function closePartnerModal() {
+  const overlay = document.getElementById('partnerModalOverlay');
+  if (overlay) {
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+}
+
+window.parseAndBindEcosystemTriggers = function() {
+  document.querySelectorAll('.partner-badge').forEach(badge => {
+    if (badge.dataset.bound) return;
+    let name = badge.textContent.replace(/[^\w\s&()\-\/]/g, '').trim();
+    if (ECOSYSTEM_PARTNERS_REGISTRY[name]) {
+      badge.classList.add('partner-trigger-link');
+      badge.dataset.bound = "true";
+      badge.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openPartnerModal(name);
+      });
+    }
+  });
+
+  const targetSections = ['#outcomesGrid', '#resultsPanel', '#journeyPanel'];
+  const targets = Object.keys(ECOSYSTEM_PARTNERS_REGISTRY);
+
+  targetSections.forEach(selector => {
+    document.querySelectorAll(selector).forEach(container => {
+      const walk = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null, false);
+      let textNode;
+      const nodesToReplace = [];
+
+      while (textNode = walk.nextNode()) {
+        let parent = textNode.parentNode;
+        if (parent && parent.classList.contains('partner-trigger-link')) continue;
+        if (parent && ['SCRIPT', 'STYLE', 'A', 'BUTTON'].includes(parent.tagName)) continue;
+
+        const text = textNode.nodeValue;
+        for (const target of targets) {
+          if (text.includes(target)) {
+            nodesToReplace.push({ node: textNode, match: target });
+            break; 
+          }
+        }
+      }
+
+      nodesToReplace.forEach(({ node, match }) => {
+        const text = node.nodeValue;
+        const index = text.indexOf(match);
+        if (index !== -1 && node.parentNode) {
+          const span = document.createElement('span');
+          span.className = 'partner-trigger-link';
+          span.textContent = match;
+          span.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openPartnerModal(match);
+          });
+
+          const remainingText = text.substring(index + match.length);
+          node.nodeValue = text.substring(0, index);
+          
+          if (node.nextSibling) {
+            node.parentNode.insertBefore(span, node.nextSibling);
+            if (remainingText) node.parentNode.insertBefore(document.createTextNode(remainingText), span.nextSibling);
+          } else {
+            node.parentNode.appendChild(span);
+            if (remainingText) node.parentNode.appendChild(document.createTextNode(remainingText));
+          }
+        }
+      });
+    });
+  });
+};
+
+/* ═══ INIT & OBSERVERS ═══ */
+let currentRegionSelect = 'north-america';
+let currentStepSelect = 0;
+
+function selectRegion(regionKey, btn) {
+  currentRegionSelect = regionKey;
+  document.querySelectorAll('.region-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderJourneyPanel();
+}
+
+function selectStep(idx) {
+  currentStepSelect = idx;
+  document.getElementById('stageTabs').innerHTML = JOURNEY_STEPS.map((s, i) => `
+    <div class="stage-tab${i === currentStepSelect ? ' active' : ''}" onclick="selectStep(${i})">
+      <span class="stage-num">STEP ${s.id}</span>
+      <span class="stage-ico">${s.icon}</span>
+      <span class="stage-lbl">${s.label}</span>
+    </div>
+  `).join('');
+  document.getElementById('stageProgress').style.width = Math.round(((idx + 1) / 10) * 100) + '%';
+  renderJourneyPanel();
+}
+
+function renderJourneyPanel() {
+  const step = JOURNEY_STEPS[currentStepSelect];
+  const region = REGIONS[currentRegionSelect];
+  const ctx = region.context[step.id] || ['Insights loading...', 'Customising for market'];
+  
+  const partnerTags = step.partners.map((p, i) => `<span class="partner-badge tag-${step.partnerTypes[i]||'consultant'}">${p}</span>`).join('');
+  
+  document.getElementById('journeyPanel').innerHTML = `
+    <div class="jp-header">
+      <div>
+        <div class="jp-stage-badge">STAGE 0${step.id} // ${region.label.toUpperCase()}</div>
+        <h3 class="jp-title">${step.name}</h3>
+        <p class="jp-desc">${step.desc}</p>
+      </div>
+      <div class="jp-region-context">
+        <div class="jp-rc-label">${region.flag} ${region.label} Context</div>
+        ${ctx.map(c => `<div class="jp-rc-item"><div class="jp-rc-dot"></div><span>${c}</span></div>`).join('')}
+        <div style="margin-top:0.75rem; padding-top:0.6rem; border-top:1px solid rgba(255,204,0,0.15);">
+          <div style="font-family:var(--f-mono);font-size:0.58rem;color:var(--yellow);margin-bottom:0.25rem;text-transform:uppercase;">💡 Key Insight</div>
+          <div style="font-size:0.77rem;color:rgba(255,255,255,0.65);line-height:1.4;">${region.keyInsight}</div>
+        </div>
+      </div>
+    </div>
+    <div class="jp-outcome-banner">
+      <div><div class="jp-outcome-label">✦ Expected Outcome</div><div class="jp-outcome-text">${step.outcome}</div></div>
+      <div style="display:flex;gap:0.5rem;">
+        <button class="jp-nav-btn" onclick="selectStep(${currentStepSelect - 1})" ${currentStepSelect===0?'disabled':''}>←</button>
+        <button class="jp-nav-btn" onclick="selectStep(${currentStepSelect + 1})" ${currentStepSelect===9?'disabled':''}>→</button>
+      </div>
+    </div>
+    <div class="jp-body">
+      <div class="jp-col"><div class="jp-col-label">Ecosystem Partners</div><div class="partner-badges">${partnerTags}</div></div>
+      <div class="jp-col"><div class="jp-col-label">How DHL Supports You</div>${step.dhl.map(d => `<div class="jp-item"><span class="jp-item-ico">→</span>${d}</div>`).join('')}</div>
+      <div class="jp-col"><div class="jp-col-label">Key Deliverables</div>${step.deliverables.map(d => `<div class="jp-item"><span class="jp-item-ico">✓</span>${d}</div>`).join('')}</div>
+    </div>
+  `;
+  
+  if(window.parseAndBindEcosystemTriggers) window.parseAndBindEcosystemTriggers();
+}
+
+let expandedOutcome = null;
+function toggleOutcome(id) {
+  const card = document.getElementById('oc-' + id);
+  if (expandedOutcome && expandedOutcome !== id) {
+    const prev = document.getElementById('oc-' + expandedOutcome);
+    if (prev) prev.classList.remove('expanded');
+  }
+  if (expandedOutcome === id) { card.classList.remove('expanded'); expandedOutcome = null; }
+  else { card.classList.add('expanded'); expandedOutcome = id; }
+}
+
+let currentQuestion = 0;
+let answers = new Array(10).fill(null);
+
+function buildRadarSVG(scores, svgId) {
+  const n = scores.length;
+  const cx = 180, cy = 180, maxR = 110;
+  const angles = scores.map((_, i) => (360 / n) * i);
+
+  function polarToXY(a, r) {
+    const rad = (a - 90) * Math.PI / 180;
+    return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
+  }
+
+  let gridLines = '';
+  for (let ring = 1; ring <= 5; ring++) {
+    const r = (ring / 5) * maxR;
+    const pts = angles.map(a => `${polarToXY(a, r).x},${polarToXY(a, r).y}`).join(' ');
+    gridLines += `<polygon points="${pts}" fill="none" stroke="rgba(0,0,0,0.07)" stroke-width="1"/>`;
+  }
+
+  let spokes = '';
+  angles.forEach(a => {
+    const p = polarToXY(a, maxR);
+    spokes += `<line x1="${cx}" y1="${cy}" x2="${p.x}" y2="${p.y}" stroke="rgba(0,0,0,0.08)" stroke-width="1"/>`;
+  });
+
+  const scorePoints = scores.map((s, i) => `${polarToXY(angles[i], (s / 5) * maxR).x},${polarToXY(angles[i], (s / 5) * maxR).y}`).join(' ');
+
+  let dots = '', labels = '';
+  scores.forEach((s, i) => {
+    const p = polarToXY(angles[i], (s / 5) * maxR);
+    const lp = polarToXY(angles[i], maxR + 25);
+    dots += `<circle cx="${p.x}" cy="${p.y}" r="4" fill="${DIMENSIONS[i].color}" stroke="#fff" stroke-width="1.5" style="transition:all 0.4s ease"/>`;
+    const anchor = lp.x < cx - 10 ? 'end' : lp.x > cx + 10 ? 'start' : 'middle';
+    labels += `<text x="${lp.x}" y="${lp.y + 4}" text-anchor="${anchor}" font-family="JetBrains Mono,monospace" font-size="9" fill="#6C6C70" font-weight="600" text-transform="uppercase">${DIMENSIONS[i].name}</text>`;
+  });
+
+  document.getElementById(svgId).innerHTML = `
+    ${gridLines}${spokes}
+    <polygon points="${scorePoints}" fill="rgba(212,5,17,0.12)" stroke="var(--red)" stroke-width="2" stroke-linejoin="round" style="transition:all 0.4s ease"/>
+    ${dots}${labels}
+  `;
+}
+
+function updateScoreRing(pct) {
+  const arc = document.getElementById('scoreRingArc');
+  arc.style.strokeDashoffset = 201 - (pct / 100) * 201;
+  arc.style.stroke = pct < 40 ? '#D40511' : pct < 70 ? '#F59E0B' : '#10B981';
+  document.getElementById('scoreRingText').textContent = Math.round(pct) + '%';
+}
+
+function getWeightedDimensionScore(dimId) {
+  let actualWeight = 0, maxWeight = 0;
+  PILLARS.forEach((p, i) => {
+    if (p.dims[dimId]) {
+      const pWeight = p.dims[dimId];
+      if (answers[i] !== null) actualWeight += answers[i] * pWeight;
+      maxWeight += 5 * pWeight;
+    }
+  });
+  return maxWeight === 0 ? 0 : (actualWeight / maxWeight) * 5;
+}
+
+function getCompositeScore() {
+  let actual = 0, max = 0;
+  PILLARS.forEach((p, i) => {
+    if (answers[i] !== null) actual += answers[i] * p.globalWeight;
+    max += 5 * p.globalWeight;
+  });
+  return max === 0 ? 0 : (actual / max) * 100;
+}
+
+function updateRadar() {
+  const dimScores = DIMENSIONS.map(d => getWeightedDimensionScore(d.id));
+  buildRadarSVG(dimScores, 'radarChart');
+  updateScoreRing(getCompositeScore());
+}
+
+function initAssessment() {
+  buildRadarSVG([0,0,0,0,0], 'radarChart');
+  
+  document.getElementById('radarLegend').innerHTML = DIMENSIONS.map(d => `
+    <div class="radar-legend-item"><div class="radar-legend-dot" style="background:${d.color}"></div><span>${d.name}</span></div>
+  `).join('');
+
+  document.getElementById('assessmentPanel').innerHTML = PILLARS.map((p, i) => `
+    <div class="question-block" id="q${i}" style="display:${i===0 ? 'block':'none'}">
+      <div class="question-pillar">Question ${i+1} of 10 · ${p.name}</div>
+      <div class="question-text">${p.question}</div>
+      <div class="question-context">${p.context}</div>
+      <div class="answer-options">
+        ${p.options.map(o => `
+          <div class="answer-option" onclick="selectAnswer(${i}, ${o.score}, this)">
+            <div class="answer-option-score">${o.score}</div>
+            <div class="answer-option-text"><strong>${o.label}</strong>${o.text}</div>
+          </div>
+        `).join('')}
+      </div>
+      <div class="question-nav">
+        <button class="btn-prev" onclick="prevQuestion()" ${i===0?'style="visibility:hidden"':''}>← Previous</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function selectAnswer(qIdx, score, el) {
+  answers[qIdx] = score;
+  document.querySelectorAll(`#q${qIdx} .answer-option`).forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  updateRadar();
+
+  setTimeout(() => {
+    if (qIdx < 9) {
+      document.getElementById(`q${qIdx}`).style.display = 'none';
+      document.getElementById(`q${qIdx+1}`).style.display = 'block';
+      currentQuestion++;
+      updateProgress();
+    } else showResults();
+  }, 380);
+}
+
+function prevQuestion() {
+  if (currentQuestion > 0) {
+    document.getElementById(`q${currentQuestion}`).style.display = 'none';
+    currentQuestion--;
+    document.getElementById(`q${currentQuestion}`).style.display = 'block';
+    updateProgress();
+  }
+}
+
+function resetAssessment() {
+  currentQuestion = 0;
+  answers = new Array(10).fill(null);
+  document.getElementById('resultsPanel').style.display = 'none';
+  document.getElementById('quizProgWrap').style.display = 'block';
+  document.getElementById('assessmentPanel').style.display = 'block';
+  document.getElementById('radarTile').classList.remove('collapsed');
+  document.querySelectorAll('.answer-option').forEach(btn => btn.classList.remove('selected'));
+  for (let i=0; i<10; i++) document.getElementById(`q${i}`).style.display = i===0 ? 'block' : 'none';
+  updateProgress(); updateRadar();
+  document.getElementById('assessment').scrollIntoView({ behavior: 'smooth' });
+}
+
+function showPdfToast(message, type = 'default', duration = 3500) {
+  const existing = document.getElementById('pdfToast');
+  if (existing) existing.remove();
+
+  const toast = document.createElement('div');
+  toast.id = 'pdfToast';
+  toast.className = `pdf-toast ${type}`;
+  toast.innerHTML = `<span>${type === 'success' ? '✓' : type === 'error' ? '✗' : 'ℹ'}</span> ${message}`;
+  document.body.appendChild(toast);
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => toast.classList.add('show'));
+  });
+
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => toast.remove(), 400);
+  }, duration);
+}
+
+function generateAndDownloadPDF() {
+  const btn = document.getElementById('btnDownloadTrack');
+  const ctx = window._lastAssessmentContext;
+
+  if (!ctx) {
+    showPdfToast('No assessment data found. Please complete the assessment first.', 'error');
+    return;
+  }
+
+  btn.classList.add('loading');
+  btn.setAttribute('aria-busy', 'true');
+
+  setTimeout(() => {
+    try {
+      _buildPDF(ctx);
+      showPdfToast('Your expansion track PDF has been downloaded!', 'success');
+    } catch (err) {
+      console.error('PDF generation error:', err);
+      showPdfToast('PDF generation failed. Please try again.', 'error');
+    } finally {
+      btn.classList.remove('loading');
+      btn.removeAttribute('aria-busy');
+    }
+  }, 80);
+}
+
+function _buildPDF(ctx) {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+
+  const RED    = [212, 5, 17];
+  const YELLOW = [255, 204, 0];
+  const BLACK  = [10, 10, 11];
+  const DARK   = [30, 30, 32];
+  const MID    = [90, 90, 95];
+  const LIGHT  = [145, 145, 150];
+  const RULE   = [220, 220, 225];
+  const BG     = [248, 248, 250];
+  const WHITE  = [255, 255, 255];
+  const GREEN  = [22, 163, 74];
+  const AMBER  = [217, 119, 6];
+
+  const PW = 210, PH = 297;
+  const ML = 20, MR = 20;
+  const CW = PW - ML - MR;
+  let y = 0;
+
+  const rgb  = (c) => { doc.setTextColor(...c); };
+  const fill = (c) => { doc.setFillColor(...c); };
+  const stroke = (c, w = 0.25) => { doc.setDrawColor(...c); doc.setLineWidth(w); };
+  const f    = (size, weight = 'normal') => { doc.setFont('helvetica', weight); doc.setFontSize(size); };
+  const text = (str, x, ty, opts = {}) => doc.text(str || '', x, ty, opts);
+  const box  = (x, by, w, h, color) => { fill(color); doc.rect(x, by, w, h, 'F'); };
+  const rule = (ry, color = RULE, thickness = 0.3) => { stroke(color, thickness); doc.line(ML, ry, PW - MR, ry); };
+  const wrap = (str, maxW) => doc.splitTextToSize(str || '', maxW);
+  const gap = (n) => { y += n; };
+  const checkBreak = (h) => { if (y + h > PH - 18) addPage(); };
+
+  const pageHeader = () => {
+    box(0, 0, PW, 3, RED);
+    f(6, 'normal'); rgb(LIGHT);
+    text('DHL GLOBAL EXPANSION NAVIGATOR', ML, 9);
+    text('CONFIDENTIAL ASSESSMENT REPORT', PW - MR, 9, { align: 'right' });
+    stroke(RULE, 0.2); doc.line(ML, 11, PW - MR, 11);
+    y = 20;
+  };
+
+  const pageFooter = () => {
+    stroke(RULE, 0.2); doc.line(ML, PH - 12, PW - MR, PH - 12);
+    f(6, 'normal'); rgb(LIGHT);
+    text('DHL Express  ·  dhl.com', ML, PH - 7);
+    text(`Page ${doc.getCurrentPageInfo().pageNumber}`, PW - MR, PH - 7, { align: 'right' });
+    box(0, PH - 2.5, PW, 2.5, YELLOW);
+  };
+
+  const addPage = () => { pageFooter(); doc.addPage(); pageHeader(); };
+
+  /* PAGE 1 — COVER */
+  box(0, 0, PW, 72, RED);
+  box(ML, 16, 22, 10, YELLOW);
+  f(9, 'bold'); rgb(BLACK);
+  text('DHL', ML + 2.5, 23.5);
+
+  f(26, 'bold'); rgb(WHITE);
+  text('Global Expansion', ML, 46);
+  text('Navigator', ML, 58);
+  box(ML, 63, 38, 1.5, YELLOW);
+
+  f(9, 'normal'); rgb([255, 200, 200]);
+  text('Personalised Assessment Report', ML, 70);
+
+  y = 92;
+  f(7, 'bold'); rgb(LIGHT);
+  text('YOUR COMPOSITE READINESS SCORE', ML, y);
+  gap(3);
+
+  const score = Math.round(ctx.compositePct);
+  const scoreColor = score >= 70 ? GREEN : score >= 40 ? AMBER : RED;
+  f(52, 'bold'); rgb(scoreColor);
+  text(`${score}%`, ML, y + 28);
+
+  f(9, 'normal'); rgb(MID);
+  const scoreLabel = score >= 70 ? 'Strong readiness — ready to scale.' : score >= 40 ? 'Moderate readiness — gaps to address.' : 'Early stage — foundational gaps present.';
+  text(scoreLabel, ML, y + 36);
+
+  y = y + 43;
+  rule(y, RULE, 0.4);
+  gap(10);
+
+  f(7, 'bold'); rgb(LIGHT);
+  text('RECOMMENDED EXPANSION TRACK', ML, y);
+  gap(7);
+  f(16, 'bold'); rgb(BLACK);
+  text(ctx.recTrack.name, ML, y);
+  gap(7);
+  f(9, 'normal'); rgb(MID);
+  const whySummary = wrap(ctx.recTrack.why, CW - 20);
+  text(whySummary.slice(0, 2), ML, y);
+  gap((Math.min(whySummary.length, 2)) * 5 + 6);
+
+  rule(y, RULE, 0.4);
+  gap(10);
+  f(7, 'bold'); rgb(LIGHT);
+  text('READINESS BY DIMENSION', ML, y);
+  gap(8);
+
+  const sortedForDisplay = [...ctx.dimsScored].sort((a, b) => {
+    const order = ['Foundation', 'Finance', 'Digital', 'Scale', 'Marketing'];
+    return order.indexOf(a.name) - order.indexOf(b.name);
+  });
+
+  sortedForDisplay.forEach(d => {
+    checkBreak(12);
+    const barMaxW = CW - 30;
+    const filled  = (d.score / 5) * barMaxW;
+    const dColor  = d.score >= 4 ? GREEN : d.score >= 3 ? AMBER : RED;
+
+    f(8, 'normal'); rgb(BLACK);
+    text(d.name, ML, y);
+
+    f(8, 'bold'); rgb(dColor);
+    text(`${d.score.toFixed(1)}`, PW - MR, y, { align: 'right' });
+
+    box(ML + 28, y - 4, barMaxW, 3.5, [235, 235, 238]);
+    box(ML + 28, y - 4, filled, 3.5, dColor);
+    gap(10);
+  });
+
+  const today = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' });
+  stroke(RULE, 0.3); doc.line(ML, PH - 18, PW - MR, PH - 18);
+  f(6.5, 'normal'); rgb(LIGHT);
+  text(`Generated ${today}`, ML, PH - 12);
+  text('Confidential — for recipient use only', PW - MR, PH - 12, { align: 'right' });
+  box(0, PH - 2.5, PW, 2.5, YELLOW);
+
+  /* PAGE 2 — RESPONSES */
+  doc.addPage();
+  pageHeader();
+  f(6.5, 'bold'); rgb(RED); text('SECTION 01', ML, y); gap(6);
+  f(17, 'bold'); rgb(BLACK); text('Your Assessment Responses', ML, y); gap(5);
+  rule(y, RULE); gap(10);
+
+  f(8.5, 'normal'); rgb(MID); text('Responses captured across 10 operational pillars during your diagnostic.', ML, y); gap(12);
+
+  PILLARS.forEach((pillar, i) => {
+    checkBreak(20);
+    const ansScore  = answers[i] || 1;
+    const ansOption = pillar.options.find(o => o.score === ansScore) || pillar.options[0];
+    const barColor  = ansScore >= 4 ? GREEN : ansScore >= 3 ? AMBER : RED;
+
+    if (i % 2 === 0) box(ML, y - 4, CW, 17, BG);
+    box(ML, y - 4, 3, 17, barColor);
+
+    f(6.5, 'bold'); rgb(LIGHT); text(`Q${String(i + 1).padStart(2, '0')}  ${pillar.name.toUpperCase()}`, ML + 7, y + 1);
+    f(8, 'bold'); rgb(BLACK);
+    const qShort = pillar.question.length > 80 ? pillar.question.slice(0, 77) + '…' : pillar.question;
+    text(qShort, ML + 7, y + 7);
+
+    f(7.5, 'normal'); rgb(MID);
+    const ansText = `${ansOption.label} — ${ansOption.text}`;
+    const ansShort = ansText.length > 90 ? ansText.slice(0, 87) + '…' : ansText;
+    text(ansShort, ML + 7, y + 12.5);
+
+    f(10, 'bold'); rgb(barColor); text(`${ansScore}/5`, PW - MR, y + 7, { align: 'right' });
+    gap(20);
+  });
+
+  /* PAGE 3 — DIMENSIONS */
+  addPage();
+  f(6.5, 'bold'); rgb(RED); text('SECTION 02', ML, y); gap(6);
+  f(17, 'bold'); rgb(BLACK); text('Dimensional Readiness Analysis', ML, y); gap(5);
+  rule(y, RULE); gap(10);
+  f(8.5, 'normal'); rgb(MID); text('Your weighted scores across the five strategic dimensions of international expansion.', ML, y); gap(14);
+
+  sortedForDisplay.forEach((d) => {
+    checkBreak(38);
+    const dColor   = d.score >= 4 ? GREEN : d.score >= 3 ? AMBER : RED;
+    const status   = d.score >= 4 ? 'STRONG' : d.score >= 3 ? 'ADEQUATE' : d.score >= 2 ? 'WEAK' : 'CRITICAL GAP';
+    const barMaxW  = CW - 10;
+    const filled   = (d.score / 5) * barMaxW;
+
+    f(11, 'bold'); rgb(BLACK); text(d.name, ML, y);
+    f(11, 'bold'); rgb(dColor); text(`${d.score.toFixed(1)} / 5`, PW - MR, y, { align: 'right' }); gap(5);
+    
+    f(6.5, 'bold'); rgb(dColor); text(status, ML, y); gap(5);
+
+    box(ML, y, barMaxW, 4, [232, 232, 236]);
+    box(ML, y, filled, 4, dColor); gap(9);
+
+    f(7.5, 'normal'); rgb(MID);
+    const dimNote = {
+      'Foundation':   'Legal entity, export certifications, and market-entry structure.',
+      'Finance':      'FX hedging, cross-border treasury, and international banking setup.',
+      'Digital':      'Global storefront speed, localisation, and tech infrastructure.',
+      'Scale':        'Logistics optimisation, warehousing, and fulfilment speed.',
+      'Marketing':    'International demand generation, localised ad spend, and SEO.',
+    };
+    text(dimNote[d.name] || '', ML, y); gap(6);
+    rule(y, RULE, 0.25); gap(10);
+  });
+
+  gap(4); checkBreak(22);
+  f(7, 'bold'); rgb(LIGHT); text('SCORE GUIDE', ML, y); gap(6);
+  const guide = [
+    { range: '4.0 – 5.0', label: 'Strong', note: 'Ready to scale in this dimension.', color: GREEN },
+    { range: '3.0 – 3.9', label: 'Adequate', note: 'Minor gaps — optimise before scaling.', color: AMBER },
+    { range: '2.0 – 2.9', label: 'Weak', note: 'Targeted intervention required.', color: RED },
+    { range: '1.0 – 1.9', label: 'Critical Gap', note: 'Prioritise immediately.', color: RED },
+  ];
+  guide.forEach(g => {
+    f(7.5, 'normal'); rgb(MID);
+    const dot = `${g.range}  —  ${g.label}:  ${g.note}`;
+    text(dot, ML, y); gap(6);
+  });
+
+  /* PAGE 4 — RECOMMENDED TRACK */
+  addPage();
+  f(6.5, 'bold'); rgb(RED); text('SECTION 03', ML, y); gap(6);
+  f(17, 'bold'); rgb(BLACK); text('Recommended Expansion Track', ML, y); gap(5);
+  rule(y, RULE); gap(12);
+
+  box(ML, y - 3, 2.5, 22, RED);
+  f(13, 'bold'); rgb(BLACK); text(ctx.recTrack.name, ML + 7, y + 4);
+  f(8, 'normal'); rgb(MID); text('Recommended starting track based on your diagnostic results.', ML + 7, y + 11);
+
+  f(7, 'bold'); rgb(LIGHT); text('COMPOSITE SCORE', PW - MR, y + 1, { align: 'right' });
+  f(18, 'bold'); rgb(scoreColor); text(`${score}%`, PW - MR, y + 12, { align: 'right' }); gap(26);
+
+  rule(y, RULE, 0.3); gap(12);
+
+  f(8.5, 'bold'); rgb(BLACK); text('Why This Track', ML, y); gap(6);
+  f(8.5, 'normal'); rgb(DARK);
+  const whyLines = wrap(ctx.recTrack.why, CW);
+  text(whyLines, ML, y); gap(whyLines.length * 5 + 10);
+
+  checkBreak(30);
+  f(8.5, 'bold'); rgb(BLACK); text('Expected Outcomes', ML, y); gap(6);
+  f(8.5, 'normal'); rgb(DARK);
+  const outLines = wrap(ctx.recTrack.outcome, CW);
+  text(outLines, ML, y); gap(outLines.length * 5 + 10);
+
+  checkBreak(28);
+  rule(y, RULE, 0.3); gap(10);
+  f(7, 'bold'); rgb(LIGHT); text('ECOSYSTEM PARTNERS ALLOCATED', ML, y); gap(8);
+
+  const badges = ctx.recTrack.badges;
+  const colW = CW / 2;
+  badges.forEach((b, bi) => {
+    const col = bi % 2;
+    const row = Math.floor(bi / 2);
+    checkBreak(8);
+    const bx = ML + col * colW;
+    const by2 = y + row * 8;
+    box(bx, by2 - 3.5, 2, 5.5, RED);
+    f(8, 'normal'); rgb(DARK); text(b, bx + 5, by2);
+  });
+  gap(Math.ceil(badges.length / 2) * 8 + 6);
+
+  /* PAGE 5 — MILESTONES */
+  addPage();
+  f(6.5, 'bold'); rgb(RED); text('SECTION 04', ML, y); gap(6);
+  f(17, 'bold'); rgb(BLACK); text('Your Priority 90-Day Milestones', ML, y); gap(5);
+  rule(y, RULE); gap(10);
+  f(8.5, 'normal'); rgb(MID); text('The three highest-gap areas from your assessment, sequenced for immediate action.', ML, y); gap(14);
+
+  ctx.mappedGaps.forEach((item, i) => {
+    checkBreak(44);
+    const priorityColor = item.gap >= 6 ? RED : item.gap >= 3 ? AMBER : GREEN;
+    const priorityLabel = item.gap >= 6 ? 'CRITICAL' : item.gap >= 3 ? 'HIGH PRIORITY' : 'MEDIUM';
+
+    f(7, 'bold'); rgb(LIGHT); text('MONTH', ML, y + 1);
+    f(22, 'bold'); rgb(priorityColor); text(`0${i + 1}`, ML, y + 13);
+    box(ML + 18, y - 2, 0.5, 42, RULE);
+
+    const cx2 = ML + 24, cw2 = CW - 24;
+    f(6.5, 'bold'); rgb(priorityColor); text(priorityLabel, cx2, y + 1);
+    f(10, 'bold'); rgb(BLACK); text(`${item.pillar.name}: ${item.pillar.milestone}`, cx2, y + 9);
+
+    f(8, 'normal'); rgb(DARK);
+    const oLines = wrap(`Outcome — ${item.pillar.outcome}`, cw2);
+    text(oLines.slice(0, 2), cx2, y + 16);
+
+    f(7, 'normal'); rgb(LIGHT);
+    const partnerStr = item.pillar.partners.map(p => p.name).join('  ·  ');
+    text(partnerStr, cx2, y + 28);
+
+    gap(46); rule(y, RULE, 0.25); gap(10);
+  });
+
+  /* PAGE 6 — PROGRAM OVERVIEW */
+  addPage();
+  f(6.5, 'bold'); rgb(RED); text('SECTION 05', ML, y); gap(6);
+  f(17, 'bold'); rgb(BLACK); text('Next Steps & Program Overview', ML, y); gap(5);
+  rule(y, RULE); gap(12);
+
+  f(7, 'bold'); rgb(LIGHT); text('THE DHL EXPANSION PROGRAM — 4 STAGES', ML, y); gap(10);
+
+  const stages = [
+    { num: '01', phase: 'Assessment',  name: 'Operational Diagnostic',           done: true,  desc: 'Completed. Your readiness score and expansion track are confirmed.' },
+    { num: '02', phase: 'Planning',    name: 'Market Selection & Structuring',    done: false, desc: 'DHL advisors validate your market hypothesis and design legal and financial structure.' },
+    { num: '03', phase: 'Activation',  name: 'Partner Onboarding & Go-Live',      done: false, desc: 'Pre-vetted partners introduced. Logistics, payments, storefront, and marketing activated.' },
+    { num: '04', phase: 'Scale',       name: 'International Revenue Acceleration',done: false, desc: 'Growth loop running. Ad spend scaled, inventory staged for 1–3 day local delivery.' },
+  ];
+
+  stages.forEach((stage, si) => {
+    checkBreak(24);
+    const lineH = 22;
+    if (si < stages.length - 1) box(ML + 3.5, y + 7, 0.5, lineH, [210, 210, 215]);
+
+    stroke(stage.done ? GREEN : RULE, 0.5); fill(stage.done ? GREEN : WHITE);
+    doc.circle(ML + 3.75, y + 3, 3.75, stage.done ? 'F' : 'FD');
+    f(6.5, 'bold'); rgb(stage.done ? WHITE : LIGHT); text(stage.num, ML + 3.75, y + 4.8, { align: 'center' });
+
+    f(7, 'bold'); rgb(stage.done ? GREEN : LIGHT); text(stage.phase.toUpperCase(), ML + 12, y + 1);
+    f(9, 'bold'); rgb(BLACK); text(stage.name, ML + 12, y + 7);
+    f(7.5, 'normal'); rgb(MID);
+    const stageLines = wrap(stage.desc, CW - 14);
+    text(stageLines.slice(0, 2), ML + 12, y + 13);
+    gap(lineH + 4);
+  });
+
+  gap(6); rule(y, RULE, 0.3); gap(12);
+  checkBreak(55);
+  f(8.5, 'bold'); rgb(BLACK); text('What to Prepare for Your First DHL Consultation', ML, y); gap(8);
+
+  const prepItems = [
+    'Annual revenue and gross margin by product category',
+    'Target markets ranked by strategic priority',
+    'Existing international shipping volumes and carrier contracts',
+    'Tech stack overview: ERP, e-commerce platform, analytics',
+    'Export documentation status: IEC code, AD code, FIRC',
+    'IP protection status in target markets',
+    'Key contacts: CFO, marketing lead, operations lead',
+  ];
+  prepItems.forEach(item => {
+    checkBreak(8); box(ML, y - 3.5, 2, 5, YELLOW);
+    f(8, 'normal'); rgb(DARK); text(item, ML + 6, y); gap(8);
+  });
+
+  /* PAGE 7 — CONNECT CTA */
+  pageFooter(); doc.addPage();
+  box(0, 0, PW, 100, RED); box(0, PH - 2.5, PW, 2.5, YELLOW);
+  box(ML, 16, 22, 10, YELLOW);
+  f(9, 'bold'); rgb(BLACK); text('DHL', ML + 2.5, 23.5);
+
+  f(8, 'bold'); rgb([255, 180, 180]); text('READY TO MOVE FORWARD?', ML, 48);
+  f(24, 'bold'); rgb(WHITE); text('Connect with the', ML, 62); text('DHL team today.', ML, 76);
+  f(9, 'normal'); rgb([255, 210, 210]);
+  text('Apply to the DHL Global Expansion Program and get matched', ML, 92);
+  text('with pre-vetted partners who will execute your roadmap.', ML, 99);
+
+  y = 118;
+  f(8, 'bold'); rgb(LIGHT); text('YOUR EXPANSION SUMMARY', ML, y); gap(8);
+  f(12, 'bold'); rgb(BLACK); text(ctx.recTrack.name, ML, y); gap(6);
+  f(8, 'normal'); rgb(MID); text(`Composite readiness score: ${score}%  ·  Assessed ${new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' })}`, ML, y); gap(14);
+  rule(y, RULE, 0.3); gap(14);
+
+  const ctaBtnW = 90, ctaBtnH = 14, ctaBtnX = ML, ctaBtnY = y;
+  box(ctaBtnX, ctaBtnY, ctaBtnW, ctaBtnH, RED);
+  f(9, 'bold'); rgb(WHITE); text('Connect Now  →', ctaBtnX + ctaBtnW / 2, ctaBtnY + 9.5, { align: 'center' });
+  doc.link(ctaBtnX, ctaBtnY, ctaBtnW, ctaBtnH, { url: CONNECT_NOW_URL }); gap(16);
+
+  f(7.5, 'normal'); rgb(LIGHT); text('Or visit:', ML, y);
+  f(7.5, 'normal'); rgb(RED); text(CONNECT_NOW_URL, ML + 16, y);
+  doc.link(ML + 16, y - 4, doc.getTextWidth(CONNECT_NOW_URL), 5, { url: CONNECT_NOW_URL }); gap(14);
+  rule(y, RULE, 0.25); gap(10);
+
+  f(7, 'normal'); rgb(LIGHT); text('No commitment required  ·  Free assessment  ·  320+ Indian businesses onboarded', ML, y); gap(10);
+  f(7, 'normal'); rgb(LIGHT); text('DHL Express  ·  © 2025 DHL Group  ·  All rights reserved', ML, y);
+
+  doc.save(`DHL-Expansion-Track-${Math.round(ctx.compositePct)}pct.pdf`);
+}
+
+function updateProgress() {
+  const pct = Math.round(((currentQuestion + 1) / 10) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('questionCounter').textContent = `Question ${currentQuestion + 1} of 10`;
+  document.getElementById('progressPct').textContent = pct + '%';
+}
+
+/* ═══ EMAIL GATE LOGIC ═══ */
+function submitEmailGate() {
+  const input = document.getElementById('emailGateInput');
+  const errorEl = document.getElementById('emailGateError');
+  const email = input.value.trim();
+  const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  if (!valid) {
+    input.classList.add('error');
+    errorEl.textContent = 'Please enter a valid business email address.';
+    input.focus();
+    return;
+  }
+
+  input.classList.remove('error');
+  errorEl.textContent = '';
+  window._capturedEmail = email;
+
+  // Unlock transition
+  const gate = document.getElementById('emailGatePanel');
+  gate.style.opacity = '0';
+  gate.style.transform = 'translateY(-10px)';
+  gate.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+  
+setTimeout(() => {
+    gate.style.display = 'none';
+    // Target multiple blurred sections instead of a single ID
+    document.querySelectorAll('.blur-target').forEach(el => {
+      el.classList.remove('content-locked');
+      el.classList.add('content-unlocked');
+    });
+  }, 300);
+}
+
+function showResults() {
+  document.getElementById('radarTile').classList.add('collapsed');
+  document.getElementById('quizProgWrap').style.display = 'none';
+  document.getElementById('assessmentPanel').style.display = 'none';
+
+  _prepareResultsData();
+  _renderResults(true); // pass true to indicate teaser state
+}
+
+function _prepareResultsData() {
+  const dimsScored = DIMENSIONS.map(d => ({ 
+    ...d, 
+    score: getWeightedDimensionScore(d.id) 
+  }));
+  
+  dimsScored.sort((a, b) => a.score - b.score);
+
+  let selectedTrackKey = dimsScored[0].name; 
+  
+  if (dimsScored[4].score < 2.5) { 
+    selectedTrackKey = 'all_low'; 
+  } else if (dimsScored[0].score >= 4.0) { 
+    selectedTrackKey = 'all_high'; 
+  } else {
+    const gapLowestMiddle = dimsScored[1].score - dimsScored[0].score;
+    const gapMiddleHighest = dimsScored[2].score - dimsScored[1].score;
+
+    if (gapLowestMiddle < 0.8 && gapMiddleHighest > 0.5) {
+      const combined = [dimsScored[0].name, dimsScored[1].name].sort().join('_');
+      if (TRACKS[combined]) selectedTrackKey = combined;
+    }
+  }
+
+  const recTrack = TRACKS[selectedTrackKey] || TRACKS[dimsScored[0].name];
+  const compositePct = getCompositeScore();
+
+  const mappedGaps = answers.map((score, idx) => ({
+    pillar: PILLARS[idx],
+    gap: (5 - (score || 1)) * PILLARS[idx].globalWeight
+  })).sort((a, b) => b.gap - a.gap).slice(0, 3);
+
+  window._lastAssessmentContext = { dimsScored, recTrack, mappedGaps, compositePct };
+}
+
+function _renderResults(isLocked = false) {
+  const res = document.getElementById('resultsPanel');
+  res.style.display = 'block';
+  const ctx = window._lastAssessmentContext;
+
+  let gateHTML = '';
+  let blurClass = ''; // Replaces blurStart/blurEnd
+
+  if (isLocked) {
+    gateHTML = `
+      <div class="email-gate-panel" id="emailGatePanel" style="display:block; margin: 2rem 0; box-shadow: var(--shadow-lg); border-radius: var(--r-xl); border: 1px solid var(--border-strong); background: var(--surface); position: relative; z-index: 10;">
+        <div class="email-gate-inner">
+          <div class="email-gate-icon">📊</div>
+          <h3 class="email-gate-title">Unlock Your Full Roadmap</h3>
+          <p class="email-gate-subtitle">Enter your business email to reveal your personalised 90-day expansion milestones and download the full advisory report.</p>
+          <div class="email-gate-perks">
+            <span class="email-gate-perk"><span class="email-gate-perk-dot">✓</span> Personalised track report</span>
+            <span class="email-gate-perk"><span class="email-gate-perk-dot">✓</span> 90-day action plan PDF</span>
+            <span class="email-gate-perk"><span class="email-gate-perk-dot">✓</span> Partner ecosystem map</span>
+          </div>
+          <div class="email-gate-form">
+            <input type="email" id="emailGateInput" class="email-gate-input" placeholder="your@company.com" autocomplete="email" onkeydown="if(event.key==='Enter') submitEmailGate()"/>
+            <button class="email-gate-btn" onclick="submitEmailGate()">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              Unlock Results
+            </button>
+            <div class="email-gate-error" id="emailGateError"></div>
+          </div>
+          <p class="email-gate-privacy">🔒 No spam, ever. Your email is used only to send this report.</p>
+        </div>
+      </div>
+    `;
+    blurClass = 'content-locked blur-target';
+  } else {
+    blurClass = 'content-unlocked blur-target';
+  }
+
+  res.innerHTML = `
+    <div class="results-hero">
+      <h3>Your Cross-Functional Expansion Roadmap</h3>
+      <p>Based on your operational diagnostic across our 5 dimensions, we've mapped the precise sequence of actions required to unlock profitable international revenue.</p>
+    </div>
+
+    <div class="score-summary-grid">
+      ${DIMENSIONS.map(d => {
+        const s = getWeightedDimensionScore(d.id);
+        const l = s >= 4 ? 'Strong' : s >= 3 ? 'Adequate' : s >= 2 ? 'Weak' : 'Critical Gap';
+        return `
+        <div class="score-summary-card" style="border-top: 3px solid ${d.color};">
+          <div>
+            <div class="ssc-label">${d.name}</div>
+            <div class="ssc-score" style="color:${d.color}">${s.toFixed(1)}<span style="font-size:0.9rem;font-weight:400;color:var(--ink-5)">/5</span></div>
+            <div class="ssc-desc">${l}</div>
+          </div>
+          <div class="ssc-bar"><div class="ssc-bar-fill" style="width:${(s/5)*100}%;background:${d.color}"></div></div>
+        </div>`;
+      }).join('')}
+    </div>
+
+    <div style="background:var(--surface); border:2px solid var(--red); border-radius:var(--r-lg); overflow:hidden; margin-bottom:2rem; box-shadow:var(--shadow-md);">
+      <div style="background:var(--red); color:#fff; padding:1.25rem 1.5rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
+        <div>
+          <div style="font-family:var(--f-mono); font-size:0.7rem; text-transform:uppercase; letter-spacing:0.1em; font-weight:600; margin-bottom:0.4rem; opacity:0.8;">Recommended Starting Track</div>
+          <div style="font-family:var(--f-display); font-size:1.4rem; font-weight:700;">${ctx.recTrack.name}</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-family:var(--f-mono); font-size:0.6rem; text-transform:uppercase; opacity:0.8;">Composite</div>
+          <div style="font-family:var(--f-display); font-size:1.4rem; font-weight:800;">${Math.round(ctx.compositePct)}%</div>
+        </div>
+      </div>
+      
+      <div class="${blurClass}" style="padding:1.5rem; display:grid; grid-template-columns:1.5fr 1fr; gap:1.5rem;">
+        <div>
+          <h4 style="font-family:var(--f-display); font-size:1rem; font-weight:700; margin-bottom:0.3rem;">Why We Recommend This Track</h4>
+          <p style="font-size:0.85rem; color:var(--ink-3); margin-bottom:1rem; line-height:1.5;">${ctx.recTrack.why}</p>
+          <h4 style="font-family:var(--f-display); font-size:1rem; font-weight:700; margin-bottom:0.3rem;">Expected Outcomes</h4>
+          <p style="font-size:0.85rem; color:var(--ink-3); margin-bottom:0; line-height:1.5;">${ctx.recTrack.outcome}</p>
+        </div>
+        <div style="background:var(--surface-2); padding:1rem; border-radius:var(--r-md); border:1px solid var(--border);">
+          <h5 style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.05em; font-weight:700; margin-bottom:0.8rem; color:var(--ink-5);">Ecosystem Partners Allocated</h5>
+          <div class="partner-badges">${ctx.recTrack.badges.map(b => `<span class="partner-badge tag-consultant">${b}</span>`).join('')}</div>
+        </div>
+      </div>
+    </div>
+
+    ${gateHTML}
+
+    <div class="${blurClass}">
+      <div class="roadmap-section">
+        <h3>Your Priority 90-Day Milestones</h3>
+        <div class="roadmap-container">
+          ${ctx.mappedGaps.map((item, index) => {
+            const badge = item.gap >= 6 ? 'priority-critical">CRITICAL' : item.gap >= 3 ? 'priority-high">HIGH PRIORITY' : 'priority-medium">MEDIUM';
+            return `
+            <div class="roadmap-step">
+              <div class="roadmap-month"><span class="rm-label">Month</span><span class="rm-num">0${index+1}</span></div>
+              <div class="roadmap-content">
+                <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.25rem;">
+                  <h4 style="margin:0;">${item.pillar.name}: ${item.pillar.milestone}</h4>
+                  <span class="roadmap-priority ${badge}</span>
+                </div>
+                <p><strong>Outcome:</strong> ${item.pillar.outcome}</p>
+                <div class="partner-badges" style="margin-top:0.2rem">
+                  ${item.pillar.partners.map(p => `<span class="partner-badge tag-${p.type}">${p.name}</span>`).join('')}
+                </div>
+              </div>
+            </div>`;
+          }).join('')}
+        </div>
+      </div>
+
+      <div class="results-cta-box">
+        <div>
+          <h4>Ready to Execute This Roadmap?</h4>
+          <p>Apply to the DHL Global Expansion Program to get matched with these verified partners.</p>
+        </div>
+        <div>
+          <button class="btn-restart" onclick="resetAssessment()">↩ Retake Assessment</button>
+        </div>
+      </div>
+
+      <div class="results-action-bar" id="resultsActionBar">
+        <div class="results-action-bar-label">✦ Your next steps</div>
+        <a href="${CONNECT_NOW_URL}" target="_blank" rel="noopener noreferrer" class="btn-connect-now" title="Connect with our DHL expansion team">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          Connect Now
+        </a>
+        <button class="btn-download-track" id="btnDownloadTrack" onclick="generateAndDownloadPDF()" title="Download your personalised expansion track as a PDF">
+          <span class="btn-dl-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span>
+          <span class="btn-spinner"></span>
+          Download Track
+        </button>
+        <span style="font-size:0.78rem; color:var(--ink-5); margin-left:auto; align-self:center; font-style:italic;">Free · No signup required</span>
+      </div>
+    </div>
+  `;
+  
+  if(window.parseAndBindEcosystemTriggers) window.parseAndBindEcosystemTriggers();
+}
+
+/* ═══ OUTCOMES BUILD ═══ */
+document.getElementById('outcomesGrid').innerHTML = OUTCOMES.map(o => {
+  const tags = o.ecosystemPartners.map(p => `<span class="partner-badge tag-dhl">${p}</span>`).join('');
+  const enablerList = o.enablers.map(e => `<li>${e}</li>`).join('');
+  return `
+  <div class="outcome-card" id="oc-${o.id}" onclick="toggleOutcome('${o.id}')">
+    <div class="oc-front">
+      <div class="oc-icon-wrap" style="background:${o.bgColor}"><span style="font-size:1.4rem">${o.icon}</span></div>
+      <div class="oc-seq">${o.seq} / 08</div>
+      <div class="oc-title">${o.title}</div>
+      <div class="oc-tagline">${o.tagline}</div>
+      <div class="oc-arrow"><div class="oc-chevron">▼</div></div>
+    </div>
+    <div class="oc-detail">
+      <div class="oc-detail-inner">
+        <div><div class="oc-detail-label">What Enables This Outcome</div><ul class="oc-detail-list">${enablerList}</ul></div>
+        <div>
+          <div class="oc-detail-label">Why This Matters</div>
+          <div class="oc-detail-text">${o.whyItMattersText} <a href="${o.whyItMattersLink}" target="_blank" rel="noopener" style="color:var(--red); font-weight:600; text-decoration:none; display:inline-block;">Read report ↗</a></div>
+        </div>
+        <div><div class="oc-detail-label">Ecosystem Partners</div><div class="oc-partners-row">${tags}</div></div>
+      </div>
+    </div>
+  </div>
+`}).join('');
+
+/* ═══ PROCESS BUILD ═══ */
+document.getElementById('processTimeline').innerHTML = PROCESS_STEPS.map(s => `
+  <div class="process-step">
+    <div class="ps-node">${s.num}</div>
+    <div class="ps-content">
+      <div class="ps-phase">${s.phase}</div>
+      <div class="ps-name">${s.name}</div>
+      <div class="ps-desc">${s.desc}</div>
+      <div class="ps-metrics">${s.metrics.map(m => `<span class="ps-metric">${m}</span>`).join('')}</div>
+    </div>
+  </div>
+`).join('');
+
+/* ═══ INIT & OBSERVERS ═══ */
+document.addEventListener('DOMContentLoaded', () => {
+  selectStep(0);
+  initAssessment();
+  initPartnerModalUI();
+  parseAndBindEcosystemTriggers();
+});
+
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 20));
+
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+function animateCount(el, target, suffix = '') {
+  const duration = 1600;
+  const start = performance.now();
+  const step = (now) => {
+    const progress = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.floor(eased * target) + suffix;
+    if (progress < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+const counterObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const el = e.target;
+      const target = parseInt(el.dataset.count);
+      const suffix = el.dataset.suffix || '+';
+      animateCount(el, target, suffix);
+      counterObserver.unobserve(el);
+    }
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('[data-count]').forEach(el => counterObserver.observe(el));
+</script>
+</body>
+</html>
